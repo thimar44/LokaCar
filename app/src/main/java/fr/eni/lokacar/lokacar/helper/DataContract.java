@@ -142,7 +142,7 @@ public abstract class DataContract {
     public final static String TABLE_TYPE_CARBURANT_NAME = "TYPE_CARBURANT";
 
     public final static String TYPE_CARBURANT_ID = "ID";
-    public final static String TYPE_CARBURANT_URI = "LIBELLE";
+    public final static String TYPE_CARBURANT_LIBELLE = "LIBELLE";
 
     /**
      * TABLE TypeVehicule
@@ -157,7 +157,7 @@ public abstract class DataContract {
     public final static String TABLE_TYPE_VEHICULE_NAME = "TYPE_VEHICULE";
 
     public final static String TYPE_VEHICULE_ID = "ID";
-    public final static String TYPE_VEHICULE_URI = "LIBELLE";
+    public final static String TYPE_VEHICULE_LIBELLE = "LIBELLE";
 
     /**
      * TABLE Vehicule
@@ -170,6 +170,7 @@ public abstract class DataContract {
             + "IDAGENCE INTEGER,"
             + "IDTYPE_VEHICULE INTEGER,"
             + "IDTYPE_CARBURANT INTEGER,"
+            + "IDMARQUE INTEGER,"
             + "KILOMETRAGE INTEGER,"
             + "PRIXJOUR INTEGER,"
             + "ENLOCATION BOOLEAN,"
@@ -184,6 +185,7 @@ public abstract class DataContract {
     public final static String VEHICULE_IDAGENCE = "IDAGENCE";
     public final static String VEHICULE_IDTYPE_VEHICULE = "IDTYPE_VEHICULE";
     public final static String VEHICULE_IDTYPE_CARBURANT = "IDTYPE_CARBURANT";
+    public final static String VEHICULE_IDMARQUE = "IDMARQUE";
     public final static String VEHICULE_KILOMETRAGE = "KILOMETRAGE";
     public final static String VEHICULE_PRIXJOUR = "PRIXJOUR";
     public final static String VEHICULE_ENLOCATION = "ENLOCATION";

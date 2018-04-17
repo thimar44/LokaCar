@@ -22,23 +22,24 @@ public class ClientDao {
 
     /**
      * Create ContentValues with modele
+     *
      * @param client
      * @return
      */
     private ContentValues constructValuesDB(Client client) {
         ContentValues values = new ContentValues();
-        values.put(DataContract.CLIENT_ID , client.getId());
-        values.put(DataContract.CLIENT_CODEPOSTAL , client.getCodePostal());
-        values.put(DataContract.CLIENT_NOM , client.getNom());
-        values.put(DataContract.CLIENT_PRENOM ,client.getPrenom());
-        values.put(DataContract.CLIENT_ADRESSE , client.getAdresse());
-        values.put(DataContract.CLIENT_VILLE , client.getVille());
-        values.put(DataContract.CLIENT_NUMERO_TELEPHONE , client.getNumeroTelephone());
-        values.put(DataContract.CLIENT_MAIL , client.getMail());
+        values.put(DataContract.CLIENT_ID, client.getId());
+        values.put(DataContract.CLIENT_CODEPOSTAL, client.getCodePostal());
+        values.put(DataContract.CLIENT_NOM, client.getNom());
+        values.put(DataContract.CLIENT_PRENOM, client.getPrenom());
+        values.put(DataContract.CLIENT_ADRESSE, client.getAdresse());
+        values.put(DataContract.CLIENT_VILLE, client.getVille());
+        values.put(DataContract.CLIENT_NUMERO_TELEPHONE, client.getNumeroTelephone());
+        values.put(DataContract.CLIENT_MAIL, client.getMail());
         return values;
     }
 
-    public long insert(Client client){
+    public long insert(Client client) {
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -49,17 +50,16 @@ public class ClientDao {
         return id;
     }
 
-    public long insertOrUpdate(Client client){
+    public long insertOrUpdate(Client client) {
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         long id = -1;
         Cursor c = db.query(DataContract.TABLE_CLIENT_NAME, null,
-                "ID="+client.getId(), null,null,null,null);
+                "ID=" + client.getId(), null, null, null, null);
 
-        if(c.getCount() > 0){
+        if (c.getCount() > 0) {
             update(client);
-        }
-        else {
+        } else {
             insert(client);
         }
 
@@ -68,7 +68,7 @@ public class ClientDao {
         return id;
     }
 
-    public List<Client> getListe(String marqueModele) {
+    public List<Client> getListe() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.query(
                 DataContract.TABLE_CLIENT_NAME, null,
@@ -78,23 +78,23 @@ public class ClientDao {
                 null,
                 null);
 
-        List<Client> objects = new ArrayList<Client>() ;
+        List<Client> objects = new ArrayList<Client>();
 
-        if(cursor != null && cursor.moveToFirst()){
-            do{
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
 
-                Integer id = cursor.getInt(cursor.getColumnIndex(DataContract.CLIENT_ID ));
-                int codePostal = cursor.getInt(cursor.getColumnIndex(DataContract.CLIENT_CODEPOSTAL ));
-                String nom = cursor.getString(cursor.getColumnIndex(DataContract.CLIENT_NOM ));
-                String prenom = cursor.getString(cursor.getColumnIndex(DataContract.CLIENT_PRENOM ));
-                String adresse = cursor.getString(cursor.getColumnIndex(DataContract.CLIENT_ADRESSE ));
-                String ville = cursor.getString(cursor.getColumnIndex(DataContract.CLIENT_VILLE ));
-                int numeroTelephone = cursor.getInt(cursor.getColumnIndex(DataContract.CLIENT_NUMERO_TELEPHONE ));
-                String mail = cursor.getString(cursor.getColumnIndex(DataContract.CLIENT_MAIL ));
+                Integer id = cursor.getInt(cursor.getColumnIndex(DataContract.CLIENT_ID));
+                int codePostal = cursor.getInt(cursor.getColumnIndex(DataContract.CLIENT_CODEPOSTAL));
+                String nom = cursor.getString(cursor.getColumnIndex(DataContract.CLIENT_NOM));
+                String prenom = cursor.getString(cursor.getColumnIndex(DataContract.CLIENT_PRENOM));
+                String adresse = cursor.getString(cursor.getColumnIndex(DataContract.CLIENT_ADRESSE));
+                String ville = cursor.getString(cursor.getColumnIndex(DataContract.CLIENT_VILLE));
+                int numeroTelephone = cursor.getInt(cursor.getColumnIndex(DataContract.CLIENT_NUMERO_TELEPHONE));
+                String mail = cursor.getString(cursor.getColumnIndex(DataContract.CLIENT_MAIL));
 
                 objects.add(new Client(id, codePostal, numeroTelephone, mail, nom, prenom, adresse, ville));
 
-            }while (cursor.moveToNext());
+            } while (cursor.moveToNext());
 
             cursor.close();
         }
@@ -102,6 +102,35 @@ public class ClientDao {
         return objects;
     }
 
+    public Client getClientFromId(int idClient) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query(
+                DataContract.TABLE_CLIENT_NAME, null,
+                "ID = " + idClient,
+                null,
+                null,
+                null,
+                null);
+
+        Client object = null;
+
+        if (cursor != null && cursor.moveToFirst()) {
+
+            Integer id = cursor.getInt(cursor.getColumnIndex(DataContract.CLIENT_ID));
+            int codePostal = cursor.getInt(cursor.getColumnIndex(DataContract.CLIENT_CODEPOSTAL));
+            String nom = cursor.getString(cursor.getColumnIndex(DataContract.CLIENT_NOM));
+            String prenom = cursor.getString(cursor.getColumnIndex(DataContract.CLIENT_PRENOM));
+            String adresse = cursor.getString(cursor.getColumnIndex(DataContract.CLIENT_ADRESSE));
+            String ville = cursor.getString(cursor.getColumnIndex(DataContract.CLIENT_VILLE));
+            int numeroTelephone = cursor.getInt(cursor.getColumnIndex(DataContract.CLIENT_NUMERO_TELEPHONE));
+            String mail = cursor.getString(cursor.getColumnIndex(DataContract.CLIENT_MAIL));
+
+            object = new Client(id, codePostal, numeroTelephone, mail, nom, prenom, adresse, ville);
+            cursor.close();
+        }
+
+        return object;
+    }
 
 
     public void update(int id, Client client) {
@@ -113,9 +142,7 @@ public class ClientDao {
 
     }
 
-    public void update( Client client) {
+    public void update(Client client) {
         update(client.getId(), client);
     }
-
-
 }
