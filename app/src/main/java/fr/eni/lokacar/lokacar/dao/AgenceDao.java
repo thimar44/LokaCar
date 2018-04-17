@@ -13,7 +13,9 @@ public class AgenceDao {
     private ModeleHelper dbHelper;
 
     public AgenceDao(Context context) {
+
         this.dbHelper = new ModeleHelper(context);
+
     }
 
     /**
