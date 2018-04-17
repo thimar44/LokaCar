@@ -9,4 +9,5 @@
     <string name="telephone">Téléphone :</string>
     <string name="e_mail">E-mail :</string>
     <string name="adresse">Adresse :</string>
+    <string name="libl_chargement">CHARGEMENT</string>
 </resources>

@@ -31,7 +31,7 @@
         android:layout_height="match_parent"
         android:layout_weight="0.7"
         android:inputType="text"
-
+        android:text="JCD"
         />
 </LinearLayout>
 
@@ -55,7 +55,9 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.7"
-            android:inputType="textPassword"/>
+            android:inputType="textPassword"
+            android:text="JCD"/>
+
     </LinearLayout>
 
     <RelativeLayout android:layout_width="match_parent"

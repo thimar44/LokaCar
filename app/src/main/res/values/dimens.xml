@@ -1,5 +1,11 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+    <dimen name="padding_middle">10dp</dimen>
+    <dimen name="padding_light">5dp</dimen>
+    <dimen name="activity_horizontal_margin">6dp</dimen>
+    <dimen name="padding_5dp">5dp</dimen>
+    <dimen name="padding_10dp">10dp</dimen>
     <dimen name="height_toolbar">50dp</dimen>
     <dimen name="padding_form">25dp</dimen>
 </resources>
