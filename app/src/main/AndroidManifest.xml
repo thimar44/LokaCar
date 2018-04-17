@@ -12,8 +12,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".LoginActivity"
             android:label="LOKACAR">
@@ -23,7 +22,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LouerActivity">
+        <activity
+            android:name=".LouerActivity"
+            android:parentActivityName=".MainActivity">
+        </activity>
+        <activity android:name=".RetourActivity"
+            android:parentActivityName=".MainActivity">
         </activity>
     </application>
 

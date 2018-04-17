@@ -50,7 +50,7 @@ public class LocationDao {
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        long id = db.insert(DataContract.TABLE_CLIENT_NAME, null, constructValuesDB(location));
+        long id = db.insert(DataContract.TABLE_LOCATION_NAME, null, constructValuesDB(location));
 
         db.close();
 
@@ -62,7 +62,7 @@ public class LocationDao {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         long id = -1;
         Cursor c = db.query(DataContract.TABLE_LOCATION_NAME, null,
-                "ID_VEHICULE = " + location.getVehicule().getId() + "AND ID_CLIENT = "+ location.getClient().getId(), null, null, null, null);
+                "ID_VEHICULE = " + location.getVehicule().getId() + " AND ID_CLIENT = "+ location.getClient().getId(), null, null, null, null);
 
         if (c.getCount() > 0) {
             update(location);
@@ -79,7 +79,7 @@ public class LocationDao {
     public List<Location> getListe(String marqueModele) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.query(
-                DataContract.TABLE_CLIENT_NAME, null,
+                DataContract.TABLE_LOCATION_NAME, null,
                 null,
                 null,
                 null,
@@ -127,7 +127,7 @@ public class LocationDao {
     public void update(int idClient, int idVehicule, Location location) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.update(DataContract.TABLE_CLIENT_NAME, constructValuesDB(location),
-                "ID_VEHICULE = " + idVehicule + "AND ID_CLIENT = "+ idClient,
+                "ID_VEHICULE = " + idVehicule + " AND ID_CLIENT = "+ idClient,
                 null);
         db.close();
 

@@ -3,7 +3,7 @@ package fr.eni.lokacar.lokacar.helper;
 public abstract class DataContract {
 
     public final static String DATABASE_NAME = "lokacar.db";
-    public final static int DATABASE_VERSION = 1;
+    public final static int DATABASE_VERSION = 2;
 
     /**
      * TABLE AGENCE

@@ -305,22 +305,17 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="50dp"
-            android:paddingLeft="50dp">
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
+            android:paddingBottom="50dp">
+
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:text="Annuler"
-                android:onClick="annulerLouer"/>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:text="Valider"
-                android:onClick="validerLouer"/>
+                android:onClick="validerLouer"
+                android:background="@color/colorPrimary200"/>
         </RelativeLayout>
 
 
