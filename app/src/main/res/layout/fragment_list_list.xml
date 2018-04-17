@@ -11,6 +11,7 @@
     android:paddingTop="4dp">
 
     <android.support.v7.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardBackgroundColor="@color/colorDark"
@@ -22,65 +23,99 @@
             android:orientation="vertical"
             android:padding="8dp">
 
-            <ImageView
-                android:layout_width="120dp"
-                android:layout_height="100dp"
-                android:src="@drawable/voitureok" />
-
-            <TextView
-                android:id="@+id/marqueVehicule"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:hint="Marque du vehicule" />
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingBottom="0dp"
+                >
 
-                <TextView
-                    android:id="@+id/typeEssence"
+                <ImageView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:src="@drawable/voitureok"
+                    android:paddingBottom="0dp"/>
+
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="0.4"
-                    android:text="Type d'essence"
+                    android:orientation="vertical"
+                    android:padding="8dp"
+                    android:paddingBottom="0dp">
 
-                    />
+                    <TextView
+                        android:id="@+id/marqueVehicule"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        tools:hint="Marque" />
 
-                <TextView
-                    android:id="@+id/prixJour"
+                    <TextView
+                        android:id="@+id/disignationVehicule"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        tools:hint="Desigration" />
+
+                    <TextView
+                        android:id="@+id/typeEssence"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Type d'essence" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.6"
-                    tools:hint="Prix / jour" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.3"
+                    android:orientation="vertical"
+                    android:padding="8dp"
+                    android:paddingBottom="0dp">
+
+                    <TextView
+                        android:id="@+id/prixJour"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:hint="Prix / jour" />
+
+                    <TextView
+                        android:id="@+id/typeVehicule"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Type Vehicule" />
+
+                    <TextView
+                        android:id="@+id/kilometres"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:hint="Kilomètres" />
+
+                </LinearLayout>
+
 
             </LinearLayout>
 
-            <LinearLayout
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/typeVehicule"
-                    android:layout_width="0dp"
+                    android:id="@+id/messageCardView"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
-                    android:text="Type Vehicule" />
+                    android:layout_centerHorizontal="true"
+                    android:text="Louer ce véhicule"
+                    android:textSize="20dp"/>
 
-                <TextView
-                    android:id="@+id/kilometres"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.6"
-                    tools:hint="Kilomètres" />
-
-            </LinearLayout>
+            </RelativeLayout>
         </LinearLayout>
 
 

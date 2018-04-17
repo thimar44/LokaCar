@@ -39,11 +39,23 @@ public class ClientDao {
         return values;
     }
 
+    private ContentValues constructValuesDBSansId(Client client) {
+        ContentValues values = new ContentValues();
+        values.put(DataContract.CLIENT_CODEPOSTAL, client.getCodePostal());
+        values.put(DataContract.CLIENT_NOM, client.getNom());
+        values.put(DataContract.CLIENT_PRENOM, client.getPrenom());
+        values.put(DataContract.CLIENT_ADRESSE, client.getAdresse());
+        values.put(DataContract.CLIENT_VILLE, client.getVille());
+        values.put(DataContract.CLIENT_NUMERO_TELEPHONE, client.getNumeroTelephone());
+        values.put(DataContract.CLIENT_MAIL, client.getMail());
+        return values;
+    }
+
     public long insert(Client client) {
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        long id = db.insert(DataContract.TABLE_CLIENT_NAME, null, constructValuesDB(client));
+        long id = db.insert(DataContract.TABLE_CLIENT_NAME, null, constructValuesDBSansId(client));
 
         db.close();
 
@@ -60,7 +72,7 @@ public class ClientDao {
         if (c.getCount() > 0) {
             update(client);
         } else {
-            insert(client);
+            id = insert(client);
         }
 
         db.close();

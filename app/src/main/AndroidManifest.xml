@@ -23,8 +23,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LouerActivity"
-            android:parentActivityName=".MainActivity"></activity>
+        <activity
+            android:name=".LouerActivity"
+            android:parentActivityName=".MainActivity">
+        </activity>
+        <activity android:name=".RetourActivity"
+            android:parentActivityName=".MainActivity">
+        </activity>
         <activity android:name=".AddCarActivity"
             android:parentActivityName=".MainActivity"></activity>
     </application>

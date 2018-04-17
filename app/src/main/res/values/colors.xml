@@ -18,4 +18,6 @@
     <color name="colorGreenLight">#8bf27d</color>
     <color name="colorGreenDark">#328926</color>
     <color name="colorGreenDarkAll">#195411</color>
+    <color name="colorRed">#F29393</color>
+
 </resources>

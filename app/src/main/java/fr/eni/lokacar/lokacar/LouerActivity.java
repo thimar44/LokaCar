@@ -1,6 +1,8 @@
 package fr.eni.lokacar.lokacar;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import fr.eni.lokacar.lokacar.been.Agence;
@@ -50,6 +53,7 @@ public class LouerActivity extends AppCompatActivity {
 
     private ClientDao clientDao;
     private LocationDao locationDao;
+    private VehiculeDao vehiculeDao;
 
 
     @Override
@@ -60,9 +64,12 @@ public class LouerActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.ourToolbar);
         toolbar.setTitle(R.string.TitleLouerActivity);
 
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+
         Intent intent = getIntent();
         int vehiculeId = intent.getIntExtra("car", 0);
-        VehiculeDao vehiculeDao = new VehiculeDao(this.getApplicationContext());
+        vehiculeDao = new VehiculeDao(this.getApplicationContext());
 
         vehicule = vehiculeDao.getVehiculeFromId(vehiculeId);
 
@@ -90,27 +97,24 @@ public class LouerActivity extends AppCompatActivity {
         edClientCodePostal = findViewById(R.id.clientCp);
         edClientVille = findViewById(R.id.clientVille);
 
+        // ******************************************************************    DUMMY  *****************************************************************
+        edClientNom.setText("Pignon"); edClientPrenom.setText("Francois"); edClientTel.setText("15848");  edClientEmail.setText("francois.pignon@ledinerdecon.fr");
+        edClientAdresse.setText("palais de l'élisée"); edClientCodePostal.setText("666");    edClientVille.setText("Meulin");
+        // ******************************************************************    DUMMY  *****************************************************************
     }
 
     public void addPhotoLouer(View view) {
         Log.d("Thibaud", "ajouter une photo");
     }
 
-    public void annulerLouer(View view) {
-        finish();
-    }
+
 
     public void validerLouer(View view) {
-        Log.d("Thibaud", "validerLouer");
+
         if (validateForm()) {
-            Log.d("Thibaud", "validerLouerLoop");
-
-
-
-
             Client client = new Client(
-                    Integer.getInteger(edClientCodePostal.getText().toString()),
-                    Integer.getInteger(edClientTel.getText().toString()),
+                    Integer.valueOf(edClientCodePostal.getText().toString()),
+                    Integer.valueOf(edClientTel.getText().toString()),
                     edClientEmail.getText().toString(),
                     edClientNom.getText().toString(),
                     edClientPrenom.getText().toString(),
@@ -118,18 +122,46 @@ public class LouerActivity extends AppCompatActivity {
                     edClientVille.getText().toString()
             );
             clientDao = new ClientDao(this.getApplicationContext());
-            clientDao.insert(client);
+            long clientId = clientDao.insert(client);
+            client.setId((int)clientId);
 
             Location location = new Location();
             location.setClient(client);
             location.setVehicule(vehicule);
-            location.setDateDebut(new Date());
+            location.setDateDebut(Calendar.getInstance().getTime());
+            location.setDateFin(Calendar.getInstance().getTime());
             location.setEtat(true);
             location.setKilometrageParcouru(0);
 
             locationDao = new LocationDao(this.getApplicationContext());
-            locationDao.insertOrUpdate(location);
+            locationDao.insert(location);
 
+            vehicule.setEnLocation(true);
+            vehiculeDao.update(vehicule);
+
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(LouerActivity.this);
+            builder.setMessage("Voulez vous envoyer un récapitulatif au client")
+                    .setTitle("");
+
+            builder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    Log.d("Thibaud", "On envoit le récapitulatif au client");
+                    finish();
+                }
+            });
+
+
+            builder.setNegativeButton("non", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User cancelled the dialog
+                    finish();
+                }
+            });
+
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
 
 
         } else {
@@ -139,7 +171,6 @@ public class LouerActivity extends AppCompatActivity {
 
 
     public boolean validateForm() {
-        Log.d("Thibaud", "validateForm");
         boolean formIsValide = true;
         if ("".equals(edClientNom.getText().toString())) formIsValide = false;
         if ("".equals(edClientPrenom.getText().toString())) formIsValide = false;

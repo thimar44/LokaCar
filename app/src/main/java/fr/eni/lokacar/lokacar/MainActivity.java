@@ -1,6 +1,7 @@
 package fr.eni.lokacar.lokacar;
 
 import android.content.Intent;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -8,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +50,12 @@ public class MainActivity extends AppCompatActivity implements ActivityMessage,
 
         //Dao Modele
         vehiculeDao = new VehiculeDao(MainActivity.this);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         lstVehicules = new ArrayList<Vehicule>();
 
 
@@ -120,9 +129,14 @@ public class MainActivity extends AppCompatActivity implements ActivityMessage,
      */
     @Override
     public void onListFragmentInteraction(final Vehicule item) {
-       Intent intent = new Intent(MainActivity.this, LouerActivity.class);
-       intent.putExtra("car", item.getId());
-       startActivity(intent);
+        Intent intent;
+        if(item.isEnLocation()){
+            intent = new Intent(MainActivity.this, RetourActivity.class);
+        } else {
+            intent = new Intent(MainActivity.this, LouerActivity.class);
+        }
+        intent.putExtra("car", item.getId());
+        startActivity(intent);
     }
 
 
