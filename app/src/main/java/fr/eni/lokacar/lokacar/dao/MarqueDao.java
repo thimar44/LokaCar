@@ -93,7 +93,7 @@ public class MarqueDao {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.query(
                 DataContract.TABLE_MARQUE_NAME, null,
-                "ID = " + id,
+                "ID=" + id,
                 null,
                 null,
                 null,
