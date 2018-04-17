@@ -145,4 +145,17 @@ public class PersonneDao {
         update(personne.getId(), personne);
     }
 
+
+    public boolean isRegistered(String login, String password){
+        boolean registered = false;
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor c = db.query(DataContract.TABLE_PERSONNE_NAME, null,
+                "IDENTIFIANT=\"" + login + "\" AND MOTDEPASSE = \"" + password + "\"", null,null,null,null);
+        if(c.getCount() > 0){
+            registered = true;
+        }
+        db.close();
+        return registered;
+    }
+
 }
