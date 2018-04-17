@@ -82,14 +82,14 @@ public abstract class DataContract {
     public final static String MARQUE_CREATE_TABLE = "CREATE TABLE IF NOT EXISTS "
             + "MARQUE ("
             + "ID INTEGER PRIMARY KEY, "
-            + "LIBELLE INTEGER"
+            + "LIBELLE TEXT"
             + ")";
 
     public final static String QUERY_DELETE_TABLE_MARQUE = "DROP TABLE IF EXISTS MARQUE";
     public final static String TABLE_MARQUE_NAME = "MARQUE";
 
     public final static String MARQUE_ID = "ID";
-    public final static String MARQUE_LIBELLE = "CODEPOSTAL";
+    public final static String MARQUE_LIBELLE = "LIBELLE";
 
     /**
      * TABLE Personne

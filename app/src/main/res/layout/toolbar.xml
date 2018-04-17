@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="@dimen/height_toolbar">
+    <Toolbar
+        android:id="@+id/ourToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_toolbar"
+        android:background="@color/colorPrimary600"
+        android:title="a modifier"
+        android:titleTextColor="@color/colorBlanc"></Toolbar>
+
+</LinearLayout>

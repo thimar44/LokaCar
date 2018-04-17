@@ -1,3 +1,5 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="height_toolbar">50dp</dimen>
+    <dimen name="padding_form">25dp</dimen>
 </resources>

@@ -11,7 +11,7 @@ public class Location {
     private Date dateDebut;
     private Date dateFin;
     private int kilometrageParcouru;
-    private boolean etat;
+    private boolean etat; //true si véhicule non rendu et false si le véhicule a été retourné
     private List<Photo> photoEntrees;
     private List<Photo> photoSorties;
 
