@@ -30,6 +30,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.7"
+        android:inputType="text"
 
         />
 </LinearLayout>
@@ -53,7 +54,8 @@
             android:id="@+id/password"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.7"/>
+            android:layout_weight="0.7"
+            android:inputType="textPassword"/>
     </LinearLayout>
 
     <RelativeLayout android:layout_width="match_parent"
