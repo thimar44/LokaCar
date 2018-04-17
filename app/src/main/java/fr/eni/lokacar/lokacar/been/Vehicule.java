@@ -14,7 +14,6 @@ public class Vehicule {
     private String designation;
     private String immatriculation;
     private List<Photo> photos;
-
     private Marque marque;
 
     public Vehicule() {
@@ -44,6 +43,19 @@ public class Vehicule {
         this.designation = designation;
         this.immatriculation = immatriculation;
         this.photos = photos;
+        this.marque = marque;
+    }
+
+    public Vehicule(int id, Agence agence, TypeVehicule typeVehicule, TypeCarburant typeCarburant, int kilometrage, int prixJour, boolean enLocation, String designation, String immatriculation, Marque marque) {
+        this.id = id;
+        this.agence = agence;
+        this.typeVehicule = typeVehicule;
+        this.typeCarburant = typeCarburant;
+        this.kilometrage = kilometrage;
+        this.prixJour = prixJour;
+        this.enLocation = enLocation;
+        this.designation = designation;
+        this.immatriculation = immatriculation;
         this.marque = marque;
     }
 

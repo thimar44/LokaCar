@@ -3,6 +3,8 @@ package fr.eni.lokacar.lokacar.been;
 import java.util.Date;
 import java.util.List;
 
+import fr.eni.lokacar.lokacar.dao.ClientDao;
+
 public class Location {
     private Client client;
     private Vehicule vehicule;
@@ -14,6 +16,15 @@ public class Location {
     private List<Photo> photoSorties;
 
     public Location() {
+    }
+
+    public Location(Client client, Vehicule vehicule, Date dateDebut, Date dateFin, int kilometrageParcouru, boolean etat) {
+        this.client = client;
+        this.vehicule = vehicule;
+        this.dateDebut = dateDebut;
+        this.dateFin = dateFin;
+        this.kilometrageParcouru = kilometrageParcouru;
+        this.etat = etat;
     }
 
     public Location(Client client, Vehicule vehicule, Date dateDebut, Date dateFin, int kilometrageParcouru, boolean etat, List<Photo> photoEntrees, List<Photo> photoSorties) {

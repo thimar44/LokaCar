@@ -59,6 +59,35 @@ public class AgenceDao {
         return id;
     }
 
+    public Agence getAgenceFromId(int id) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query(
+                DataContract.TABLE_AGENCE_NAME, null,
+                "ID = " + id,
+                null,
+                null,
+                null,
+                null);
+
+        Agence object = null;
+
+
+
+        if (cursor != null && cursor.moveToFirst()) {
+
+            int idAgence = cursor.getInt(cursor.getColumnIndex(DataContract.AGENCE_ID));
+            int codePostal = cursor.getInt(cursor.getColumnIndex(DataContract.AGENCE_CODEPOSTAL));
+            String nom = cursor.getString(cursor.getColumnIndex(DataContract.AGENCE_NOM));
+            String adresse = cursor.getString(cursor.getColumnIndex(DataContract.AGENCE_ADRESSE));
+            String ville = cursor.getString(cursor.getColumnIndex(DataContract.AGENCE_VILLE));
+
+            object = new Agence(idAgence, codePostal, nom, adresse, ville);
+            cursor.close();
+        }
+
+        return object;
+    }
+
     public void update(int id, Agence agence) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.update(DataContract.TABLE_AGENCE_NAME, constructValuesDB(agence),
