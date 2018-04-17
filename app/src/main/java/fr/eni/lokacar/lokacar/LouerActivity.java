@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,9 +56,9 @@ public class LouerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_louer);
-
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         Toolbar toolbar = findViewById(R.id.ourToolbar);
-        toolbar.setTitle("Louer un véhicule");
+        toolbar.setTitle(R.string.TitleLouerActivity);
 
         Intent intent = getIntent();
         int vehiculeId = intent.getIntExtra("car", 0);

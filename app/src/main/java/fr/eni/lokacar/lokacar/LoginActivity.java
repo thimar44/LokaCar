@@ -1,10 +1,13 @@
 package fr.eni.lokacar.lokacar;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -21,6 +24,8 @@ import fr.eni.lokacar.lokacar.dao.TypeCarburantDao;
 import fr.eni.lokacar.lokacar.dao.TypeVehiculeDao;
 import fr.eni.lokacar.lokacar.dao.VehiculeDao;
 
+import static fr.eni.lokacar.lokacar.helper.DataContract.MY_PREFS_NAME;
+
 public class LoginActivity extends AppCompatActivity {
 
     private EditText edPassword;
@@ -36,8 +41,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        setTitle("LOCAKAR");
-
+        setTitle("LOCAKAR LOGIN");
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         edPassword = findViewById(R.id.password);
         edLogin = findViewById(R.id.login);
         personneDao = new PersonneDao(this.getApplicationContext());
@@ -90,9 +95,13 @@ public class LoginActivity extends AppCompatActivity {
 
     public void loginCheck(View view) {
 
-        if (personneDao.isRegistered(edLogin.getText().toString(), edPassword.getText().toString()))
+        if (personneDao.isRegistered(edLogin.getText().toString(), edPassword.getText().toString())) {
 
-        {
+            /*SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+            int name = prefs.getInt("idPersonne", 0);
+            int idName = prefs.getInt("idAgence", 0);*/
+
+
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
         } else {

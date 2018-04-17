@@ -31,4 +31,12 @@ public class Photo {
     public void setUri(String uri) {
         this.uri = uri;
     }
+
+    @Override
+    public String toString() {
+        return "Photo{" +
+                "id=" + id +
+                ", uri='" + uri + '\'' +
+                '}';
+    }
 }

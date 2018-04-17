@@ -3,22 +3,29 @@ package fr.eni.lokacar.lokacar.dao;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.eni.lokacar.lokacar.R;
 import fr.eni.lokacar.lokacar.been.Agence;
 import fr.eni.lokacar.lokacar.been.Personne;
 import fr.eni.lokacar.lokacar.helper.DataContract;
 import fr.eni.lokacar.lokacar.helper.ModeleHelper;
 
+import static android.content.Context.MODE_PRIVATE;
+import static fr.eni.lokacar.lokacar.helper.DataContract.MY_PREFS_NAME;
+
 public class PersonneDao {
     private ModeleHelper dbHelper;
     private AgenceDao agenceDao;
+    private Context context;
 
     public PersonneDao(Context context) {
+        this.context = context;
         this.dbHelper = new ModeleHelper(context);
         this.agenceDao = new AgenceDao(context);
     }
@@ -149,9 +156,20 @@ public class PersonneDao {
     public boolean isRegistered(String login, String password){
         boolean registered = false;
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        Cursor c = db.query(DataContract.TABLE_PERSONNE_NAME, null,
+        Cursor cursor = db.query(DataContract.TABLE_PERSONNE_NAME, null,
                 "IDENTIFIANT=\"" + login + "\" AND MOTDEPASSE = \"" + password + "\"", null,null,null,null);
-        if(c.getCount() > 0){
+        if (cursor != null && cursor.moveToFirst()) {
+
+            int idPersonne = cursor.getInt(cursor.getColumnIndex(DataContract.PERSONNE_ID));
+            int idAgence = cursor.getInt(cursor.getColumnIndex(DataContract.PERSONNE_IDAGENCE));
+
+            SharedPreferences.Editor editor = context.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+            editor.putInt("idPersonne", idPersonne);
+            editor.putInt("idAgence", idAgence);
+            editor.apply();
+
+            Agence agence = this.agenceDao.getAgenceFromId(idAgence);
+            cursor.close();
             registered = true;
         }
         db.close();

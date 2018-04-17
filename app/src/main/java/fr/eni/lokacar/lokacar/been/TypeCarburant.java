@@ -31,4 +31,9 @@ public class TypeCarburant {
     public void setLibelle(String libelle) {
         this.libelle = libelle;
     }
+
+    @Override
+    public String toString() {
+        return libelle;
+    }
 }

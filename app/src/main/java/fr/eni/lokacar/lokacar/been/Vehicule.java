@@ -59,6 +59,18 @@ public class Vehicule {
         this.marque = marque;
     }
 
+    public Vehicule(Agence agence, TypeVehicule typeVehicule, TypeCarburant typeCarburant, int kilometrage, int prixJour, boolean enLocation, String designation, String immatriculation, Marque marque) {
+        this.agence = agence;
+        this.typeVehicule = typeVehicule;
+        this.typeCarburant = typeCarburant;
+        this.kilometrage = kilometrage;
+        this.prixJour = prixJour;
+        this.enLocation = enLocation;
+        this.designation = designation;
+        this.immatriculation = immatriculation;
+        this.marque = marque;
+    }
+
     public Marque getMarque() {
         return marque;
     }

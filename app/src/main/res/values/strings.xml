@@ -2,7 +2,17 @@
     <string name="app_name">LokaCar</string>
     <string name="action_settings">Settings</string>
     <string name="login">Login :</string>
+
+    <!-- TITLES -->
+    <string name="TitleMainActivity">Liste des vehicules</string>
+    <string name="TitleLouerActivity">Location d\'un vehicule</string>
+    <string name="TitleAddCarActivity">Ajout d\'un vehicule</string>
+
+    <!-- BUTTONS -->
     <string name="valider">Valider</string>
+    <string name="annuler">Annuler</string>
+
+    <!-- LOCATION STRINGS -->
     <string name="informations_client">Informations Client</string>
     <string name="nom">Nom :</string>
     <string name="prenom">Prénom :</string>
@@ -10,4 +20,14 @@
     <string name="e_mail">E-mail :</string>
     <string name="adresse">Adresse :</string>
     <string name="libl_chargement">CHARGEMENT</string>
+
+    <!-- ADD CAR STRINGS-->
+    <string name="ajoutVehicule">Ajout d\'un vehicule</string>
+    <string name="denomination">Dénomination</string>
+    <string name="immatriculation">Immatriculation</string>
+    <string name="marque">Marque</string>
+    <string name="typeCarburant">Type de Carburant</string>
+    <string name="typeVehicule">Type de Vehicule</string>
+    <string name="kilometrage">Kilométrage</string>
+    <string name="ajouterPhoto">Ajouter une photo</string>
 </resources>

@@ -1,10 +1,14 @@
 package fr.eni.lokacar.lokacar;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+
 import java.util.ArrayList;
 import java.util.List;
 import fr.eni.lokacar.lokacar.adapter.RecycledModeleAdapter;
@@ -20,18 +24,20 @@ public class MainActivity extends AppCompatActivity implements ActivityMessage,
     private AlertDialog chargeAlert;
     private VehiculeDao vehiculeDao;
     private ListFragment listFragment;
+    private FloatingActionButton fabButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
+        fabButton = findViewById(R.id.fabButton);
         //Récupère la toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) {
             //associe la toolbar
             setSupportActionBar(toolbar);
-            getSupportActionBar().setTitle("A VOIR");
+            getSupportActionBar().setTitle(R.string.TitleMainActivity);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         }
@@ -114,14 +120,19 @@ public class MainActivity extends AppCompatActivity implements ActivityMessage,
      */
     @Override
     public void onListFragmentInteraction(final Vehicule item) {
-        //TODO Intent intent = new Intent(ModeleActivity.this, LouerActivity.class);
-        //intent.putExtra("car", item.getId());
-        //startActivity(intent);
+       Intent intent = new Intent(MainActivity.this, LouerActivity.class);
+       intent.putExtra("car", item.getId());
+       startActivity(intent);
     }
 
 
     //Renseigne la liste au fr&agment contenant le RecyclerView
     private void setAdapterListe() {
         listFragment.setAdapter(new RecycledModeleAdapter(lstVehicules, MainActivity.this));
+    }
+
+    public void AddNewCar(View view) {
+        Intent intent = new Intent(MainActivity.this, AddCarActivity.class);
+        startActivity(intent);
     }
 }

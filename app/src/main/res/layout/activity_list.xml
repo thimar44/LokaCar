@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,7 +8,7 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <include layout="@layout/toolbar_layout" />
+    <!--<include layout="@layout/toolbar_layout" />-->
 
     <LinearLayout
         android:padding="@dimen/padding_middle"
@@ -20,9 +20,22 @@
 
         <fragment
             android:id="@+id/listFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             class="fr.eni.lokacar.lokacar.fragment.ListFragment"
-            />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
     </LinearLayout>
-</LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginEnd="30dp"
+        android:src="@android:drawable/ic_menu_add"
+        app:backgroundTint="@color/colorGreenDark"
+        app:fabSize="normal"
+        android:onClick="AddNewCar"/>
+</RelativeLayout>
