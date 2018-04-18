@@ -8,6 +8,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View;
@@ -16,8 +18,15 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import fr.eni.lokacar.lokacar.adapter.RecycledModeleAdapter;
+import fr.eni.lokacar.lokacar.been.Marque;
+import fr.eni.lokacar.lokacar.been.TypeCarburant;
+import fr.eni.lokacar.lokacar.been.TypeVehicule;
 import fr.eni.lokacar.lokacar.been.Vehicule;
+import fr.eni.lokacar.lokacar.dao.MarqueDao;
+import fr.eni.lokacar.lokacar.dao.TypeCarburantDao;
+import fr.eni.lokacar.lokacar.dao.TypeVehiculeDao;
 import fr.eni.lokacar.lokacar.dao.VehiculeDao;
 import fr.eni.lokacar.lokacar.fragment.ListFragment;
 import fr.eni.lokacar.lokacar.handler.ActivityMessage;
@@ -32,6 +41,16 @@ public class MainActivity extends AppCompatActivity implements ActivityMessage,
     private VehiculeDao vehiculeDao;
     private ListFragment listFragment;
     private FloatingActionButton fabButton;
+    private MarqueDao marqueDao;
+    private TypeVehiculeDao typeVehiculeDao;
+    private TypeCarburantDao typeCarburantDao;
+
+    private static boolean estFiltree;
+
+    private int idMarqueIntent;
+    private int idTypeCarburantIntent;
+    private int idTypeVehiculeIntent;
+    private boolean etatIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +58,21 @@ public class MainActivity extends AppCompatActivity implements ActivityMessage,
         setContentView(R.layout.activity_list);
 
         fabButton = findViewById(R.id.fabButton);
+
+        /*Intent intent = getIntent();
+        if (intent != null) {
+            idMarqueIntent = intent.getIntExtra("idMarque", 0);
+            idTypeCarburantIntent = intent.getIntExtra("idTypeCarburant", 0);
+            idTypeVehiculeIntent = intent.getIntExtra("idTypeVehicule", 0);
+            etatIntent = intent.getBooleanExtra("etat", false);
+            if (idMarqueIntent != 0 || idTypeCarburantIntent != 0 || idTypeVehiculeIntent != 0) {
+                estFiltree = true;
+                marqueDao = new MarqueDao(this);
+                typeVehiculeDao = new TypeVehiculeDao(this);
+                typeCarburantDao = new TypeCarburantDao(this);
+            }
+        }*/
+
 
         //TOOLBAR
         SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
@@ -59,16 +93,37 @@ public class MainActivity extends AppCompatActivity implements ActivityMessage,
     @Override
     protected void onResume() {
         super.onResume();
-        lstVehicules = new ArrayList<Vehicule>();
 
+        estFiltree = false;
+        lstVehicules = new ArrayList<Vehicule>();
 
         //Création de la fenêtre de chargement
         AlertDialog.Builder build = new AlertDialog.Builder(MainActivity.this, R.style.CustomDialog);
         build.setView(R.layout.chargement_layout);
         chargeAlert = build.create();
 
+        Intent intent = getIntent();
+        if (intent != null) {
+            idMarqueIntent = intent.getIntExtra("idMarque", 0);
+            idTypeCarburantIntent = intent.getIntExtra("idTypeCarburant", 0);
+            idTypeVehiculeIntent = intent.getIntExtra("idTypeVehicule", 0);
+            etatIntent = intent.getBooleanExtra("etat", false);
+            if (idMarqueIntent != 0 || idTypeCarburantIntent != 0 || idTypeVehiculeIntent != 0) {
+                estFiltree = true;
+                marqueDao = new MarqueDao(this);
+                typeVehiculeDao = new TypeVehiculeDao(this);
+                typeCarburantDao = new TypeCarburantDao(this);
+            }
+        }
 
-        lstVehicules = vehiculeDao.getListe();
+        if (!estFiltree) {
+            lstVehicules = vehiculeDao.getListe();
+        } else {
+            Marque marque = marqueDao.getMarqueFromId(idMarqueIntent);
+            TypeCarburant typeCarburant = typeCarburantDao.getTypeCarburantFromId(idTypeCarburantIntent);
+            TypeVehicule typeVehicule = typeVehiculeDao.getTypeVehiculeFromId(idTypeVehiculeIntent);
+            lstVehicules = vehiculeDao.getListeWithParams(typeVehicule, marque, typeCarburant, etatIntent);
+        }
 
         if (listFragment != null && listFragment.isInLayout()) {
             setAdapterListe();
@@ -115,14 +170,21 @@ public class MainActivity extends AppCompatActivity implements ActivityMessage,
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
-            case android.R.id.home:
-                onBackPressed();
-                return true;
+            case R.id.action_settings:
+                Intent intent = new Intent(MainActivity.this, FiltrerActivity.class);
+                startActivity(intent);
+                break;
         }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
     /**
@@ -133,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements ActivityMessage,
     @Override
     public void onListFragmentInteraction(final Vehicule item) {
         Intent intent;
-        if(item.isEnLocation()){
+        if (item.isEnLocation()) {
             intent = new Intent(MainActivity.this, RetourActivity.class);
         } else {
             intent = new Intent(MainActivity.this, LouerActivity.class);
