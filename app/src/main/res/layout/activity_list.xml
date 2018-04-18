@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,34 +7,40 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <!--<include layout="@layout/toolbar_layout" />-->
+    <include layout="@layout/toolbar" />
 
-    <LinearLayout
-        android:padding="@dimen/padding_middle"
-        android:id="@+id/layout_chargement"
-        android:orientation="vertical"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
-        <fragment
-            android:id="@+id/listFragment"
-            class="fr.eni.lokacar.lokacar.fragment.ListFragment"
+
+        <LinearLayout
+            android:id="@+id/layout_chargement"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_middle">
 
-    </LinearLayout>
+            <fragment
+                android:id="@+id/listFragment"
+                class="fr.eni.lokacar.lokacar.fragment.ListFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="30dp"
-        android:layout_marginEnd="30dp"
-        android:src="@android:drawable/ic_menu_add"
-        app:backgroundTint="@color/colorGreenDark"
-        app:fabSize="normal"
-        android:onClick="AddNewCar"/>
-</RelativeLayout>
+        </LinearLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="30dp"
+            android:layout_marginEnd="30dp"
+            android:background="@android:color/transparent"
+            android:onClick="AddNewCar"
+            android:src="@android:drawable/ic_menu_add"
+            app:backgroundTint="@color/colorDark"
+            app:fabSize="normal" />
+    </RelativeLayout>
+</LinearLayout>

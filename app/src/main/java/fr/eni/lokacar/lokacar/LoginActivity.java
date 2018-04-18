@@ -9,7 +9,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import fr.eni.lokacar.lokacar.been.Agence;
 import fr.eni.lokacar.lokacar.been.Marque;
@@ -41,8 +43,19 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        setTitle("LOCAKAR LOGIN");
+
+
+
+        //TOOLBAR
+        setTitle(getText(R.string.app_name));
+
+        Toolbar toolbar = findViewById(R.id.ourToolbar);
+        TextView mTitle = toolbar.findViewById(R.id.toolbar_title);
+        mTitle.setText(R.string.TitleLoginActivity);
+
+
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
         edPassword = findViewById(R.id.password);
         edLogin = findViewById(R.id.login);
         personneDao = new PersonneDao(this.getApplicationContext());
@@ -52,8 +65,12 @@ public class LoginActivity extends AppCompatActivity {
         typeCarburantDao = new TypeCarburantDao(this.getApplicationContext());
         marqueDao = new MarqueDao(this.getApplicationContext());
 
+
+
         //ENREGISTREMENT DONNEES
+       /*
         Agence agenceTEST = agenceTEST = new Agence(1, 44000, "NANTES", "10 rue du con qui dort", "Saint Herblain");
+
         agenceDao.insertOrUpdate(agenceTEST);
 
         Personne personneTest = new Personne(1, agenceTEST, "Jean-claude", "DUSS", "JCD", "JCD");
@@ -90,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
         vehiculeDao.insertOrUpdate(vehicule1);
         vehiculeDao.insertOrUpdate(vehicule2);
         vehiculeDao.insertOrUpdate(vehicule3);
-        vehiculeDao.insertOrUpdate(vehicule4);
+        vehiculeDao.insertOrUpdate(vehicule4);*/
     }
 
     public void loginCheck(View view) {

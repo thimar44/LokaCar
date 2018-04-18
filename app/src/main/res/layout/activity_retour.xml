@@ -6,8 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".RetourActivity">
 
+    <include layout="@layout/toolbar" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="activité de  retour"/>
+        android:text="activité de  retour" />
+
+
 </android.support.constraint.ConstraintLayout>

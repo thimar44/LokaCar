@@ -6,7 +6,6 @@
 
     <include layout="@layout/toolbar" />
 
-
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
@@ -20,13 +19,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/ajoutVehicule"
-                    android:textAlignment="center"
-                    android:textSize="20dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -171,7 +163,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.3"
                         android:gravity="right"
-                        android:text="@string/kilometrage" />
+                        android:text="@string/prixJour" />
 
                     <EditText
                         android:id="@+id/AddVehiculePrixJour"
@@ -183,51 +175,31 @@
 
             </LinearLayout>
 
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="25dp"
-                android:layout_marginTop="25dp"
-                android:background="@color/colorPrimaryDark" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <RelativeLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
                     <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:text="Ajouter une photo de départ"
-                        android:onClick="addPhoto"/>
+                        android:layout_alignParentRight="true"
+                        android:onClick="addVehicule"
+                        android:text="@string/valider" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:onClick="addPhoto"
+                        android:text="Ajouter une photo de départ" />
                 </RelativeLayout>
 
             </LinearLayout>
-
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="25dp"
-                android:layout_marginTop="25dp"
-                android:background="@color/colorPrimaryDark" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="50dp"
-                android:paddingLeft="50dp">
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:text="@string/valider"
-                    android:onClick="addVehicule"/>
-            </RelativeLayout>
 
         </LinearLayout>
     </ScrollView>

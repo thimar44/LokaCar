@@ -1,6 +1,7 @@
 package fr.eni.lokacar.lokacar;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
@@ -52,8 +54,16 @@ public class AddCarActivity extends AppCompatActivity {
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
+        //TOOLBAR
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        String villeAgence = prefs.getString("agenceName", " ");
+        setTitle(getText(R.string.app_name) + " " + villeAgence);
+
         Toolbar toolbar = findViewById(R.id.ourToolbar);
-        toolbar.setTitle(R.string.TitleAddCarActivity);
+        TextView mTitle = toolbar.findViewById(R.id.toolbar_title);
+        mTitle.setText(R.string.TitleAddCarActivity);
+        //END TOOLBAR
+
         Context context = this.getApplicationContext();
         vehiculeDao = new VehiculeDao(context);
         marqueDao = new MarqueDao(context);
@@ -111,8 +121,13 @@ public class AddCarActivity extends AppCompatActivity {
             int idAgence = prefs.getInt("idAgence", 0);
             Agence agence = agenceDao.getAgenceFromId(idAgence);
             Vehicule vehicule = new Vehicule(agence, typeVehicule, typeCarburant, kilometrage, prixJour, false, denomination, immatriculation, marque);
-            vehiculeDao.insert(vehicule);
-
+            long idVehicule = vehiculeDao.insertOrUpdate(vehicule);
+            if(idVehicule != -1){
+                Intent intent = new Intent(AddCarActivity.this, MainActivity.class);
+                startActivity(intent);
+            }else{
+                Toast.makeText(AddCarActivity.this, "Une erreur s'est produite", Toast.LENGTH_LONG).show();
+            }
         } else {
             Toast.makeText(AddCarActivity.this, "Vérifier les champs saisis", Toast.LENGTH_LONG).show();
         }
