@@ -36,15 +36,18 @@ public class LocationDao {
      */
     private ContentValues constructValuesDB(Location location) {
         ContentValues values = new ContentValues();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         values.put(DataContract.LOCATION_IDCLIENT, location.getClient().getId());
         values.put(DataContract.LOCATION_IDVEHICULE, location.getVehicule().getId());
-        values.put(DataContract.LOCATION_DATE_DEBUT, location.getDateDebut().toString());
-        values.put(DataContract.LOCATION_DATE_FIN, location.getDateFin().toString());
+        values.put(DataContract.LOCATION_DATE_DEBUT, dateFormat.format(location.getDateDebut()));
+        values.put(DataContract.LOCATION_DATE_FIN, dateFormat.format(location.getDateFin()));
         values.put(DataContract.LOCATION_KILOMETRAGE_PARCOURU, location.getKilometrageParcouru());
         values.put(DataContract.LOCATION_ETAT, location.isEtat());
-
         return values;
     }
+
+
+
 
     public long insert(Location location) {
 
@@ -73,13 +76,14 @@ public class LocationDao {
 
         if (cursor != null && cursor.moveToFirst()) {
 
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 Boolean etat = false;
                 Date DateDebut = null;
                 Date DateFin = null;
 
                 Integer idClient = cursor.getInt(cursor.getColumnIndex(DataContract.LOCATION_IDCLIENT));
                 Integer idVehicule = cursor.getInt(cursor.getColumnIndex(DataContract.LOCATION_IDVEHICULE));
+
                 try {
                     DateDebut = format.parse(cursor.getString(cursor.getColumnIndex(DataContract.LOCATION_DATE_DEBUT)));
                     DateFin = format.parse(cursor.getString(cursor.getColumnIndex(DataContract.LOCATION_DATE_FIN)));
@@ -140,11 +144,12 @@ public class LocationDao {
         if (cursor != null && cursor.moveToFirst()) {
             do {
 
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 Boolean etat = false;
                 Date DateDebut = null;
                 Date DateFin = null;
 
+                Integer id = cursor.getInt(cursor.getColumnIndex(DataContract.LOCATION_ID));
                 Integer idClient = cursor.getInt(cursor.getColumnIndex(DataContract.LOCATION_IDCLIENT));
                 Integer idVehicule = cursor.getInt(cursor.getColumnIndex(DataContract.LOCATION_IDVEHICULE));
                 try {
@@ -162,7 +167,7 @@ public class LocationDao {
                 }
                 Client client = clientDao.getClientFromId(idClient);
                 Vehicule vehicule = vehiculeDao.getVehiculeFromId(idVehicule);
-                objects.add(new Location(client, vehicule, DateDebut, DateFin, kilometrageParcouru, etat));
+                objects.add(new Location(id, client, vehicule, DateDebut, DateFin, kilometrageParcouru, etat));
 
             } while (cursor.moveToNext());
 
@@ -173,17 +178,16 @@ public class LocationDao {
     }
 
 
-    public void update(int idClient, int idVehicule, Location location) {
+    public void update(int idLocation, Location location) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.update(DataContract.TABLE_CLIENT_NAME, constructValuesDB(location),
-                "ID_VEHICULE = " + idVehicule + " AND ID_CLIENT = "+ idClient,
+        db.update(DataContract.TABLE_LOCATION_NAME, constructValuesDB(location),
+                "ID=" + idLocation,
                 null);
         db.close();
-
     }
     
     public void update(Location location) {
-        update(location.getClient().getId(), location.getVehicule().getId(), location);
+        update(location.getId(), location);
     }
 
 

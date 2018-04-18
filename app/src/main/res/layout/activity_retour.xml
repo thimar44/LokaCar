@@ -288,7 +288,8 @@
                     android:id="@+id/locationRetourKm"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.7" />
+                    android:layout_weight="0.7"
+                    android:inputType="number"/>
             </LinearLayout>
 
             <View
@@ -334,7 +335,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="Valider"
-                    android:onClick="validerLouer"
+                    android:onClick="validerRetour"
                     android:background="@color/colorPrimary200"/>
             </RelativeLayout>
 

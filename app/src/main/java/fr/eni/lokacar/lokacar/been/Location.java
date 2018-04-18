@@ -6,6 +6,7 @@ import java.util.List;
 import fr.eni.lokacar.lokacar.dao.ClientDao;
 
 public class Location {
+    private int id;
     private Client client;
     private Vehicule vehicule;
     private Date dateDebut;
@@ -18,7 +19,18 @@ public class Location {
     public Location() {
     }
 
+
     public Location(Client client, Vehicule vehicule, Date dateDebut, Date dateFin, int kilometrageParcouru, boolean etat) {
+        this.client = client;
+        this.vehicule = vehicule;
+        this.dateDebut = dateDebut;
+        this.dateFin = dateFin;
+        this.kilometrageParcouru = kilometrageParcouru;
+        this.etat = etat;
+    }
+
+    public Location(int id, Client client, Vehicule vehicule, Date dateDebut, Date dateFin, int kilometrageParcouru, boolean etat) {
+        this.id = id;
         this.client = client;
         this.vehicule = vehicule;
         this.dateDebut = dateDebut;
@@ -74,9 +86,7 @@ public class Location {
         return kilometrageParcouru;
     }
 
-    public void setKilometrageParcouru(int kilometrageParcouru) {
-        this.kilometrageParcouru = kilometrageParcouru;
-    }
+    public void setKilometrageParcouru(int kilometrageParcouru) {  this.kilometrageParcouru = kilometrageParcouru;  }
 
     public boolean isEtat() {
         return etat;
@@ -101,4 +111,8 @@ public class Location {
     public void setPhotoSorties(List<Photo> photoSorties) {
         this.photoSorties = photoSorties;
     }
+
+    public int getId() { return id; }
+
+    public void setId(int id) { this.id = id; }
 }
