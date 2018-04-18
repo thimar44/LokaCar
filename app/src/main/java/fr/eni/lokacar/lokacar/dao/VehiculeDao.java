@@ -66,7 +66,6 @@ public class VehiculeDao {
     }
 
     public long insert(Vehicule vehicule) {
-
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         long id = -1;
         try {
@@ -74,10 +73,7 @@ public class VehiculeDao {
         } catch (SQLException e) {
             Log.v("SQL => ", e.getMessage());
         }
-
-
         db.close();
-
         return id;
     }
 
@@ -104,8 +100,6 @@ public class VehiculeDao {
 
     public List<Vehicule> getListe() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-
         int idAgenceShared = prefs.getInt("idAgence", 0);
 
         Cursor cursor = db.query(
@@ -187,15 +181,11 @@ public class VehiculeDao {
             TypeVehicule typeVehicule = typeVehiculeDao.getTypeVehiculeFromId(idTypevehicule);
             TypeCarburant typeCarburant = typeCarburantDao.getTypeCarburantFromId(idTypeCarburant);
             Marque marque = marqueDao.getMarqueFromId(idMarque);
-
-
             object = new Vehicule(idVehicule, agence, typeVehicule, typeCarburant, kilometrage, prixJour, isEnLocation, designation, immatriculation, marque);
             cursor.close();
         }
-
         return object;
     }
-
 
     public void update(int id, Vehicule vehicule) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -203,31 +193,30 @@ public class VehiculeDao {
                 "ID=" + id,
                 null);
         db.close();
-
     }
 
     public void update(Vehicule vehicule) {
         update(vehicule.getId(), vehicule);
     }
 
-    public List<Vehicule> getListeWithParams(TypeVehicule typeVehicule, Marque marque, TypeCarburant typeCarburant, Boolean etat) {
+    public List<Vehicule> getListeWithParams(TypeVehicule typeVehicule, Marque marque, TypeCarburant typeCarburant, int etat) {
 
         int idAgenceShared = prefs.getInt("idAgence", 0);
         StringBuilder builder = new StringBuilder();
-        builder.append( DataContract.VEHICULE_IDAGENCE + " = " + String.valueOf(idAgenceShared) + " AND ");
+        builder.append( DataContract.VEHICULE_IDAGENCE + " = " + String.valueOf(idAgenceShared));
 
         if (typeCarburant != null) {
-            builder.append( DataContract.VEHICULE_IDTYPE_CARBURANT + " = " + String.valueOf(typeCarburant.getId() + " AND "));
+            builder.append(" AND " + DataContract.VEHICULE_IDTYPE_CARBURANT + " = " + String.valueOf(typeCarburant.getId()));
         }
         if (typeVehicule != null) {
-            builder.append( DataContract.VEHICULE_IDTYPE_VEHICULE + " = " + String.valueOf(typeVehicule.getId() + " AND "));
+            builder.append(" AND " + DataContract.VEHICULE_IDTYPE_VEHICULE + " = " + String.valueOf(typeVehicule.getId()));
         }
         if (marque != null) {
-            builder.append( DataContract.VEHICULE_IDMARQUE + " = " + String.valueOf(marque.getId()) + " AND ");
+            builder.append(" AND " + DataContract.VEHICULE_IDMARQUE + " = " + String.valueOf(marque.getId()));
         }
-
-        int etatVehiculeParam = etat ? 1 : 0;
-        builder.append(  DataContract.VEHICULE_ENLOCATION + " = " + etatVehiculeParam);
+        if(etat != -1){
+            builder.append(" AND " + DataContract.VEHICULE_ENLOCATION + " = " + etat);
+        }
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.query(

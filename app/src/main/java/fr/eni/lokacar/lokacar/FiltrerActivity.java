@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fr.eni.lokacar.lokacar.been.Agence;
@@ -38,7 +39,7 @@ public class FiltrerActivity extends AppCompatActivity {
     private Spinner vehiculeMarque;
     private Spinner vehiculeCarburant;
     private Spinner vehiculeType;
-    private Switch etatVehicule;
+    private Spinner etatVehicule;
     private TextView textEtat;
 
     @Override
@@ -66,20 +67,7 @@ public class FiltrerActivity extends AppCompatActivity {
         vehiculeMarque = findViewById(R.id.RechercherVehiculemarque);
         vehiculeCarburant = findViewById(R.id.RechercherVehiculetypeCarburant);
         vehiculeType = findViewById(R.id.RechercherVehiculetypeVehicule);
-        etatVehicule = findViewById(R.id.switchEtatVehiculeRechercher);
-        textEtat = findViewById(R.id.textEtatVehicule);
-
-
-        etatVehicule.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    textEtat.setText("Oui");
-                } else {
-                    textEtat.setText("Non");
-                }
-            }
-        });
-
+        etatVehicule = findViewById(R.id.etatVehiculeRechercher);
 
         spinnerParsage();
     }
@@ -91,6 +79,10 @@ public class FiltrerActivity extends AppCompatActivity {
         List<Marque> marques = marqueDao.getListe();
         List<TypeCarburant> typeCarburants = typeCarburantDao.getListe();
         List<TypeVehicule> typeVehicules = typeVehiculeDao.getListe();
+        List<String> etatsVehicule = new ArrayList<>();
+        etatsVehicule.add("Tous");
+        etatsVehicule.add("Oui");
+        etatsVehicule.add("Non");
 
         Marque marque = new Marque("Tous");
         TypeCarburant typeCarburant = new TypeCarburant("Tous");
@@ -100,51 +92,36 @@ public class FiltrerActivity extends AppCompatActivity {
         typeCarburants.add(0, typeCarburant);
         typeVehicules.add(0, typeVehicule);
 
+
         ArrayAdapter<Marque> adapterMarques = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_dropdown, marques);
+        ArrayAdapter<String> adapterEtats = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_dropdown, etatsVehicule);
         ArrayAdapter<TypeCarburant> adapterTypeCarburant = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_dropdown, typeCarburants);
         ArrayAdapter<TypeVehicule> adapterTypeVehicule = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_dropdown, typeVehicules);
 
         adapterMarques.setDropDownViewResource(R.layout.spinner_dropdown);
         adapterTypeCarburant.setDropDownViewResource(R.layout.spinner_dropdown);
         adapterTypeVehicule.setDropDownViewResource(R.layout.spinner_dropdown);
+        adapterEtats.setDropDownViewResource(R.layout.spinner_dropdown);
 
         vehiculeMarque.setAdapter(adapterMarques);
         vehiculeCarburant.setAdapter(adapterTypeCarburant);
         vehiculeType.setAdapter(adapterTypeVehicule);
+        etatVehicule.setAdapter(adapterEtats);
     }
 
     public void RechercherVehicules(View view) {
-        if (validateForm()) {
-
-
             Marque marque = (Marque) vehiculeMarque.getSelectedItem();
             TypeCarburant typeCarburant = (TypeCarburant) vehiculeCarburant.getSelectedItem();
             TypeVehicule typeVehicule = (TypeVehicule) vehiculeType.getSelectedItem();
-            Boolean stateVehicule = etatVehicule.isChecked();
+            String stateVehicule = (String) etatVehicule.getSelectedItem();
 
-
-            if (1 != -1) {
                 Intent intent = new Intent(FiltrerActivity.this, MainActivity.class);
                 intent.putExtra("idMarque", marque.getId());
                 intent.putExtra("idTypeCarburant", typeCarburant.getId());
                 intent.putExtra("idTypeVehicule", typeVehicule.getId());
                 intent.putExtra("etat", stateVehicule);
                 startActivity(intent);
-            } else {
-                Toast.makeText(FiltrerActivity.this, "Une erreur s'est produite", Toast.LENGTH_LONG).show();
-            }
-        } else {
-            Toast.makeText(FiltrerActivity.this, "Vérifier les champs saisis", Toast.LENGTH_LONG).show();
-        }
-    }
 
-
-    public boolean validateForm() {
-        boolean formIsValide = true;
-        if ("".equals(vehiculeMarque.toString())) formIsValide = false;
-        if ("".equals(vehiculeCarburant.toString())) formIsValide = false;
-        if ("".equals(vehiculeType.toString())) formIsValide = false;
-        return formIsValide;
     }
 
 }

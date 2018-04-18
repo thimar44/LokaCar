@@ -1,20 +1,38 @@
 package fr.eni.lokacar.lokacar;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import fr.eni.lokacar.lokacar.been.Agence;
@@ -46,6 +64,10 @@ public class AddCarActivity extends AppCompatActivity {
     private EditText vehiculeKilometrage;
     private EditText vehiculePrixJour;
 
+    private List<String> mCurrentPhotoPath = new ArrayList<>();
+
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static int index = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +115,7 @@ public class AddCarActivity extends AppCompatActivity {
         ArrayAdapter<Marque> adapterMarques = new ArrayAdapter(this, R.layout.spinner_dropdown, marques);
         ArrayAdapter<TypeCarburant> adapterTypeCarburant = new ArrayAdapter<TypeCarburant>(getApplicationContext(), R.layout.spinner_dropdown, typeCarburants);
         ArrayAdapter<TypeVehicule> adapterTypeVehicule = new ArrayAdapter<TypeVehicule>(getApplicationContext(), R.layout.spinner_dropdown, typeVehicules);
+
         adapterMarques.setDropDownViewResource(R.layout.spinner_dropdown);
         adapterTypeCarburant.setDropDownViewResource(R.layout.spinner_dropdown);
         adapterTypeVehicule.setDropDownViewResource(R.layout.spinner_dropdown);
@@ -104,6 +127,7 @@ public class AddCarActivity extends AppCompatActivity {
 
     public void addPhoto(View view) {
 
+        dispatchTakePictureIntent();
     }
 
     public void addVehicule(View view) {
@@ -122,10 +146,10 @@ public class AddCarActivity extends AppCompatActivity {
             Agence agence = agenceDao.getAgenceFromId(idAgence);
             Vehicule vehicule = new Vehicule(agence, typeVehicule, typeCarburant, kilometrage, prixJour, false, denomination, immatriculation, marque);
             long idVehicule = vehiculeDao.insertOrUpdate(vehicule);
-            if(idVehicule != -1){
+            if (idVehicule != -1) {
                 Intent intent = new Intent(AddCarActivity.this, MainActivity.class);
                 startActivity(intent);
-            }else{
+            } else {
                 Toast.makeText(AddCarActivity.this, "Une erreur s'est produite", Toast.LENGTH_LONG).show();
             }
         } else {
@@ -133,6 +157,65 @@ public class AddCarActivity extends AppCompatActivity {
         }
     }
 
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+                Log.v("LOG -> " , ex.getMessage());
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "fr.eni.lokacar.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            }
+        }
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath.add(image.getAbsolutePath());
+        return image;
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+
+            Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath.get(index), options);
+            Bitmap scaled = Bitmap.createScaledBitmap(bitmap, 350, 500, true);
+
+            LinearLayout lL = findViewById(R.id.layoutPictures);
+
+            ImageView imgView = new ImageView(this);
+
+            imgView.setVisibility(View.VISIBLE);
+            imgView.setImageBitmap(scaled);
+            lL.addView(imgView);
+            index++;
+        }
+    }
 
     public boolean validateForm() {
         boolean formIsValide = true;
