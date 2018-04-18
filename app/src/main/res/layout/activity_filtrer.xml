@@ -93,21 +93,18 @@
                     android:paddingLeft="@dimen/padding_form"
                     android:paddingRight="@dimen/padding_form">
 
-                    <Switch
-                        android:id="@+id/switchEtatVehiculeRechercher"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.7"
-                        android:gravity="left"
-                        android:text="@string/etatVehicule" />
-
                     <TextView
-                        android:id="@+id/textEtatVehicule"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.3"
                         android:gravity="right"
-                        android:text="Non"
+                        android:text="@string/etatVehicule" />
+
+                    <Spinner
+                        android:id="@+id/etatVehiculeRechercher"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.7"
                         />
 
                 </LinearLayout>

@@ -1,10 +1,14 @@
 package fr.eni.lokacar.lokacar;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -46,11 +50,12 @@ public class MainActivity extends AppCompatActivity implements ActivityMessage,
     private TypeCarburantDao typeCarburantDao;
 
     private static boolean estFiltree;
+    private static int MY_PERMISSIONS_REQUEST = 1;
 
     private int idMarqueIntent;
     private int idTypeCarburantIntent;
     private int idTypeVehiculeIntent;
-    private boolean etatIntent;
+    private String etatIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +64,45 @@ public class MainActivity extends AppCompatActivity implements ActivityMessage,
 
         fabButton = findViewById(R.id.fabButton);
 
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.CAMERA)) {
+
+            } else {
+
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.CAMERA},
+                        MY_PERMISSIONS_REQUEST);
+
+            }
+        } else {
+
+        }
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+
+            } else {
+
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        MY_PERMISSIONS_REQUEST);
+
+            }
+        } else {
+
+        }
 
         /*Intent intent = getIntent();
         if (intent != null) {
@@ -108,8 +152,9 @@ public class MainActivity extends AppCompatActivity implements ActivityMessage,
             idMarqueIntent = intent.getIntExtra("idMarque", 0);
             idTypeCarburantIntent = intent.getIntExtra("idTypeCarburant", 0);
             idTypeVehiculeIntent = intent.getIntExtra("idTypeVehicule", 0);
-            etatIntent = intent.getBooleanExtra("etat", false);
-            if (idMarqueIntent != 0 || idTypeCarburantIntent != 0 || idTypeVehiculeIntent != 0) {
+            etatIntent = intent.getStringExtra("etat");
+
+            if (idMarqueIntent != 0 || idTypeCarburantIntent != 0 || idTypeVehiculeIntent != 0 || etatIntent != null) {
                 estFiltree = true;
                 marqueDao = new MarqueDao(this);
                 typeVehiculeDao = new TypeVehiculeDao(this);
@@ -123,7 +168,13 @@ public class MainActivity extends AppCompatActivity implements ActivityMessage,
             Marque marque = marqueDao.getMarqueFromId(idMarqueIntent);
             TypeCarburant typeCarburant = typeCarburantDao.getTypeCarburantFromId(idTypeCarburantIntent);
             TypeVehicule typeVehicule = typeVehiculeDao.getTypeVehiculeFromId(idTypeVehiculeIntent);
-            lstVehicules = vehiculeDao.getListeWithParams(typeVehicule, marque, typeCarburant, etatIntent);
+            int valueEtat = -1;
+            if (etatIntent.equals("Oui")) {
+                valueEtat = 1;
+            } else if (etatIntent.equals("Non")) {
+                valueEtat = 0;
+            }
+            lstVehicules = vehiculeDao.getListeWithParams(typeVehicule, marque, typeCarburant, valueEtat);
         }
 
         if (listFragment != null && listFragment.isInLayout()) {
