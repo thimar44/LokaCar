@@ -13,13 +13,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import fr.eni.lokacar.lokacar.been.Agence;
+import fr.eni.lokacar.lokacar.been.Client;
+import fr.eni.lokacar.lokacar.been.Location;
 import fr.eni.lokacar.lokacar.been.Marque;
 import fr.eni.lokacar.lokacar.been.Personne;
 import fr.eni.lokacar.lokacar.been.TypeCarburant;
 import fr.eni.lokacar.lokacar.been.TypeVehicule;
 import fr.eni.lokacar.lokacar.been.Vehicule;
 import fr.eni.lokacar.lokacar.dao.AgenceDao;
+import fr.eni.lokacar.lokacar.dao.ClientDao;
+import fr.eni.lokacar.lokacar.dao.LocationDao;
 import fr.eni.lokacar.lokacar.dao.MarqueDao;
 import fr.eni.lokacar.lokacar.dao.PersonneDao;
 import fr.eni.lokacar.lokacar.dao.TypeCarburantDao;
@@ -38,6 +45,8 @@ public class LoginActivity extends AppCompatActivity {
     private TypeVehiculeDao typeVehiculeDao;
     private TypeCarburantDao typeCarburantDao;
     private MarqueDao marqueDao;
+    private LocationDao locationDao;
+    private ClientDao clientDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,9 +72,10 @@ public class LoginActivity extends AppCompatActivity {
         typeVehiculeDao = new TypeVehiculeDao(this.getApplicationContext());
         typeCarburantDao = new TypeCarburantDao(this.getApplicationContext());
         marqueDao = new MarqueDao(this.getApplicationContext());
-
+        locationDao = new LocationDao(this.getApplicationContext());
+        clientDao = new ClientDao(this.getApplicationContext());
         //ENREGISTREMENT DONNEES
-        /*
+
         Agence agenceTEST = agenceTEST = new Agence(1, 44000, "NANTES", "10 rue du con qui dort", "Saint Herblain");
         agenceDao.insertOrUpdate(agenceTEST);
 
@@ -97,13 +107,23 @@ public class LoginActivity extends AppCompatActivity {
 
 
         Vehicule vehicule1 = new Vehicule(1, agenceTEST, typeVehicule1, typeCarburant1, 54700, 50, false, "Voiture numero une", "ER-874-DF", marque1);
-        Vehicule vehicule2 = new Vehicule(2, agenceTEST, typeVehicule2, typeCarburant3, 189560, 65, false, "Voiture numero quatre", "MF-365-GE", marque2);
-        Vehicule vehicule3 = new Vehicule(3, agenceTEST, typeVehicule1, typeCarburant2, 39845, 200, false, "Voiture numero trois", "ND-987-BF", marque4);
+        Vehicule vehicule2 = new Vehicule(2, agenceTEST, typeVehicule2, typeCarburant3, 189560, 65, true, "Voiture numero quatre", "MF-365-GE", marque2);
+        Vehicule vehicule3 = new Vehicule(3, agenceTEST, typeVehicule1, typeCarburant2, 39845, 200, true, "Voiture numero trois", "ND-987-BF", marque4);
         Vehicule vehicule4 = new Vehicule(4, agenceTEST, typeVehicule2, typeCarburant1, 76987, 89, false, "Voiture numero cinq", "QM-712-PO", marque5);
         vehiculeDao.insertOrUpdate(vehicule1);
         vehiculeDao.insertOrUpdate(vehicule2);
         vehiculeDao.insertOrUpdate(vehicule3);
-        vehiculeDao.insertOrUpdate(vehicule4);*/
+        vehiculeDao.insertOrUpdate(vehicule4);
+
+        Client clientLocation = new Client(1,44140,633256985,"zz@gmail.fr","zidane","zinedine","12 rue","marseille");
+        clientDao.insert(clientLocation);
+
+        Location location1 = new Location(1,clientLocation, vehicule2, new Date(118,02,2),new Date(118,02,2),0,true);
+        Location location2 = new Location(1,clientLocation, vehicule3, new Date(118,01,2),new Date(118,01,2),0,true);
+
+        locationDao.insert(location1);
+        locationDao.insert(location2);
+
     }
 
     public void loginCheck(View view) {

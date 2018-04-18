@@ -58,6 +58,7 @@ public abstract class DataContract {
     //TODO - VOIR POUR ENTREES_PHOTO et SORTIES_PHOTO
     public final static String LOCATION_CREATE_TABLE = "CREATE TABLE IF NOT EXISTS "
             + "LOCATION ("
+            + "ID INTEGER PRIMARY KEY, "
             + "IDCLIENT INTEGER, "
             + "IDVEHICULE INTEGER, "
             + "DATE_DEBUT DATETIME,"
@@ -69,6 +70,7 @@ public abstract class DataContract {
     public final static String QUERY_DELETE_TABLE_LOCATION = "DROP TABLE IF EXISTS LOCATION";
     public final static String TABLE_LOCATION_NAME = "LOCATION";
 
+    public final static String LOCATION_ID = "ID";
     public final static String LOCATION_IDCLIENT = "IDCLIENT";
     public final static String LOCATION_IDVEHICULE = "IDVEHICULE";
     public final static String LOCATION_DATE_DEBUT = "DATE_DEBUT";

@@ -14,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -135,6 +137,7 @@ public class LouerActivity extends AppCompatActivity {
             Location location = new Location();
             location.setClient(client);
             location.setVehicule(vehicule);
+
             location.setDateDebut(Calendar.getInstance().getTime());
             location.setDateFin(Calendar.getInstance().getTime());
             location.setEtat(true);
