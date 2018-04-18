@@ -60,7 +60,6 @@ public class LouerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_louer);
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         Toolbar toolbar = findViewById(R.id.ourToolbar);
         toolbar.setTitle(R.string.TitleLouerActivity);
 

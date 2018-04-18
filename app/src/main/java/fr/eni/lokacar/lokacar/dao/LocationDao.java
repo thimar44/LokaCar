@@ -57,6 +57,55 @@ public class LocationDao {
         return id;
     }
 
+
+    public Location getCurrentLocationWithVehiculeId(int vehiculeId) {
+        Location location = null;
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+
+        Cursor cursor = db.query(
+                DataContract.TABLE_LOCATION_NAME, null,
+                DataContract.LOCATION_IDVEHICULE + "=" + vehiculeId + " AND " + DataContract.LOCATION_ETAT + "=1 " ,
+                null,
+                null,
+                null,
+                null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                Boolean etat = false;
+                Date DateDebut = null;
+                Date DateFin = null;
+
+                Integer idClient = cursor.getInt(cursor.getColumnIndex(DataContract.LOCATION_IDCLIENT));
+                Integer idVehicule = cursor.getInt(cursor.getColumnIndex(DataContract.LOCATION_IDVEHICULE));
+                try {
+                    DateDebut = format.parse(cursor.getString(cursor.getColumnIndex(DataContract.LOCATION_DATE_DEBUT)));
+                    DateFin = format.parse(cursor.getString(cursor.getColumnIndex(DataContract.LOCATION_DATE_FIN)));
+                } catch (Exception e) {
+                    Log.e("LOG => ", e.getMessage());
+                }
+                int kilometrageParcouru = cursor.getInt(cursor.getColumnIndex(DataContract.LOCATION_KILOMETRAGE_PARCOURU));
+                int state = cursor.getInt(cursor.getColumnIndex(DataContract.LOCATION_ETAT));
+                if (state == 1) {
+                    etat = true;
+                } else {
+                    etat = false;
+                }
+                Client client = clientDao.getClientFromId(idClient);
+                Vehicule vehicule = vehiculeDao.getVehiculeFromId(idVehicule);
+                location = new Location(client, vehicule, DateDebut, DateFin, kilometrageParcouru, etat);
+
+
+
+            cursor.close();
+        }
+
+
+        return location;
+    }
+
     public long insertOrUpdate(Location location) {
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();

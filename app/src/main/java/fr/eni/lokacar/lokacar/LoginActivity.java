@@ -53,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         marqueDao = new MarqueDao(this.getApplicationContext());
 
         //ENREGISTREMENT DONNEES
+        /*
         Agence agenceTEST = agenceTEST = new Agence(1, 44000, "NANTES", "10 rue du con qui dort", "Saint Herblain");
         agenceDao.insertOrUpdate(agenceTEST);
 
@@ -90,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
         vehiculeDao.insertOrUpdate(vehicule1);
         vehiculeDao.insertOrUpdate(vehicule2);
         vehiculeDao.insertOrUpdate(vehicule3);
-        vehiculeDao.insertOrUpdate(vehicule4);
+        vehiculeDao.insertOrUpdate(vehicule4);*/
     }
 
     public void loginCheck(View view) {
