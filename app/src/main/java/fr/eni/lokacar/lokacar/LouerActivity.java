@@ -2,6 +2,7 @@ package fr.eni.lokacar.lokacar;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,6 +31,8 @@ import fr.eni.lokacar.lokacar.dao.MarqueDao;
 import fr.eni.lokacar.lokacar.dao.TypeCarburantDao;
 import fr.eni.lokacar.lokacar.dao.TypeVehiculeDao;
 import fr.eni.lokacar.lokacar.dao.VehiculeDao;
+
+import static fr.eni.lokacar.lokacar.helper.DataContract.MY_PREFS_NAME;
 
 public class LouerActivity extends AppCompatActivity {
 
@@ -60,8 +63,15 @@ public class LouerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_louer);
+
+        //TOOLBAR
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        String villeAgence = prefs.getString("agenceName", " ");
+        setTitle(getText(R.string.app_name) + " " + villeAgence);
+
         Toolbar toolbar = findViewById(R.id.ourToolbar);
-        toolbar.setTitle(R.string.TitleLouerActivity);
+        TextView mTitle = toolbar.findViewById(R.id.toolbar_title);
+        mTitle.setText(R.string.TitleLouerActivity);
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
@@ -105,8 +115,6 @@ public class LouerActivity extends AppCompatActivity {
     public void addPhotoLouer(View view) {
         Log.d("Thibaud", "ajouter une photo");
     }
-
-
 
     public void validerLouer(View view) {
 

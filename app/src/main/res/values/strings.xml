@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">LokaCar</string>
+
     <string name="action_settings">Settings</string>
     <string name="login">Login :</string>
 
@@ -7,6 +8,8 @@
     <string name="TitleMainActivity">Liste des vehicules</string>
     <string name="TitleLouerActivity">Location d\'un vehicule</string>
     <string name="TitleAddCarActivity">Ajout d\'un vehicule</string>
+    <string name="TitleLoginActivity">Connexion</string>
+    <string name="TitleRetourActivity">Retour d\'un vehicule</string>
 
     <!-- BUTTONS -->
     <string name="valider">Valider</string>
@@ -30,4 +33,5 @@
     <string name="typeVehicule">Type de Vehicule</string>
     <string name="kilometrage">Kilométrage</string>
     <string name="ajouterPhoto">Ajouter une photo</string>
+    <string name="prixJour">Prix à la journée</string>
 </resources>

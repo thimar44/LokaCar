@@ -1,6 +1,7 @@
 package fr.eni.lokacar.lokacar;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.WindowManager;
@@ -13,6 +14,8 @@ import fr.eni.lokacar.lokacar.been.Location;
 import fr.eni.lokacar.lokacar.been.Vehicule;
 import fr.eni.lokacar.lokacar.dao.LocationDao;
 import fr.eni.lokacar.lokacar.dao.VehiculeDao;
+
+import static fr.eni.lokacar.lokacar.helper.DataContract.MY_PREFS_NAME;
 
 public class RetourActivity extends AppCompatActivity {
 
@@ -49,8 +52,14 @@ public class RetourActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_retour);
 
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        String villeAgence = prefs.getString("agenceName", " ");
+        setTitle(getText(R.string.app_name) + " " + villeAgence);
+
         Toolbar toolbar = findViewById(R.id.ourToolbar);
-        toolbar.setTitle("Retour d'un véhicule");
+        TextView mTitle = toolbar.findViewById(R.id.toolbar_title);
+        mTitle.setText(R.string.TitleRetourActivity);
+
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         Intent intent = getIntent();
@@ -104,11 +113,4 @@ public class RetourActivity extends AppCompatActivity {
         tvLocDateDebut.setText(location.getDateDebut().toString());
 
     }
-
-
-
-
-
-
-
 }

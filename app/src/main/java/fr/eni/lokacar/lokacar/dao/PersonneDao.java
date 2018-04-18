@@ -163,7 +163,9 @@ public class PersonneDao {
             int idPersonne = cursor.getInt(cursor.getColumnIndex(DataContract.PERSONNE_ID));
             int idAgence = cursor.getInt(cursor.getColumnIndex(DataContract.PERSONNE_IDAGENCE));
 
+            Agence agenceShared = agenceDao.getAgenceFromId(idAgence);
             SharedPreferences.Editor editor = context.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+            editor.putString("agenceName", agenceShared.getVille());
             editor.putInt("idPersonne", idPersonne);
             editor.putInt("idAgence", idAgence);
             editor.apply();

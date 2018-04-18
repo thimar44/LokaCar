@@ -1,13 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="@dimen/height_toolbar">
-    <Toolbar
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/height_toolbar"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+   <!-- <Toolbar
         android:id="@+id/ourToolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_toolbar"
         android:background="@color/colorPrimary600"
-        android:title="a modifier"
-        android:titleTextColor="@color/colorBlanc"></Toolbar>
 
+        android:title="Title"
+        android:titleTextColor="@color/colorBlanc"></Toolbar>-->
+
+    <Toolbar
+        android:id="@+id/ourToolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:minHeight="?attr/actionBarSize"
+        android:background="@color/colorPrimary600"
+        >
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Toolbar Title"
+            android:textColor="@android:color/white"
+            android:textSize="25dp"
+            android:layout_gravity="center"
+            android:id="@+id/toolbar_title" />
+
+
+    </Toolbar>
 </LinearLayout>

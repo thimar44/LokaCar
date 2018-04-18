@@ -10,6 +10,8 @@
     android:paddingRight="2dp"
     android:paddingTop="4dp">
 
+
+
     <android.support.v7.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="match_parent"
@@ -27,20 +29,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:paddingBottom="0dp"
-                >
+                android:paddingBottom="0dp">
 
                 <ImageView
+                    android:layout_height="75dp"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
                     android:layout_weight="0.3"
-                    android:src="@drawable/voitureok"
-                    android:paddingBottom="0dp"/>
+                    android:paddingBottom="0dp"
+                    android:src="@drawable/voitureok" />
 
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="0.4"
                     android:orientation="vertical"
                     android:padding="8dp"
@@ -73,7 +74,7 @@
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="0.3"
                     android:orientation="vertical"
                     android:padding="8dp"
@@ -102,7 +103,6 @@
 
             </LinearLayout>
 
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -113,9 +113,11 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:text="Louer ce véhicule"
-                    android:textSize="20dp"/>
+                    android:textColor="@android:color/holo_blue_bright"
+                    android:textSize="20dp" />
 
             </RelativeLayout>
+
         </LinearLayout>
 
 

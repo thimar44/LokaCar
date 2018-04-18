@@ -3,7 +3,11 @@ package fr.eni.lokacar.lokacar.dao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+import junit.runner.BaseTestRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +46,7 @@ public class VehiculeDao {
     //TODO -- Gerer les photos
     private ContentValues constructValuesDB(Vehicule vehicule) {
         ContentValues values = new ContentValues();
-        values.put(DataContract.VEHICULE_ID, vehicule.getId());
+        //values.put(DataContract.VEHICULE_ID, vehicule.getId());
         values.put(DataContract.VEHICULE_IDAGENCE, vehicule.getAgence().getId());
         values.put(DataContract.VEHICULE_IDTYPE_VEHICULE, vehicule.getTypeVehicule().getId());
         values.put(DataContract.VEHICULE_IDTYPE_CARBURANT, vehicule.getTypeCarburant().getId());
@@ -58,8 +62,13 @@ public class VehiculeDao {
     public long insert(Vehicule vehicule) {
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
+        long id = -1;
+        try{
+            id = db.insert(DataContract.TABLE_VEHICULE_NAME, null, constructValuesDB(vehicule));
+        }catch (SQLException e){
+            Log.v("SQL => ", e.getMessage());
+        }
 
-        long id = db.insert(DataContract.TABLE_VEHICULE_NAME, null, constructValuesDB(vehicule));
 
         db.close();
 
@@ -67,18 +76,23 @@ public class VehiculeDao {
     }
 
     public long insertOrUpdate(Vehicule vehicule) {
-
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
         long id = -1;
-        Cursor c = db.query(DataContract.TABLE_VEHICULE_NAME, null,
-                "ID=" + vehicule.getId(), null, null, null, null);
+        if(vehicule.getId() > 0) {
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        if (c.getCount() > 0) {
-            update(vehicule);
+            Cursor c = db.query(DataContract.TABLE_VEHICULE_NAME, null,
+                    "ID=" + vehicule.getId(), null, null, null, null);
+
+            if (c.getCount() > 0) {
+                update(vehicule);
+            } else {
+                id = insert(vehicule);
+            }
+            db.close();
         } else {
-            insert(vehicule);
+            id = insert(vehicule);
         }
-        db.close();
+
         return id;
     }
 
@@ -131,7 +145,7 @@ public class VehiculeDao {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.query(
                 DataContract.TABLE_VEHICULE_NAME, null,
-                "ID = " + id,
+                "ID=" + id,
                 null,
                 null,
                 null,

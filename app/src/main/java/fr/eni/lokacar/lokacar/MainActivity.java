@@ -2,6 +2,7 @@ package fr.eni.lokacar.lokacar;
 
 import android.content.Intent;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -10,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View;
+import android.widget.TextView;
 
 
 import java.util.ArrayList;
@@ -19,6 +21,8 @@ import fr.eni.lokacar.lokacar.been.Vehicule;
 import fr.eni.lokacar.lokacar.dao.VehiculeDao;
 import fr.eni.lokacar.lokacar.fragment.ListFragment;
 import fr.eni.lokacar.lokacar.handler.ActivityMessage;
+
+import static fr.eni.lokacar.lokacar.helper.DataContract.MY_PREFS_NAME;
 
 public class MainActivity extends AppCompatActivity implements ActivityMessage,
         ListFragment.OnListFragmentInteractionListener {
@@ -35,22 +39,21 @@ public class MainActivity extends AppCompatActivity implements ActivityMessage,
         setContentView(R.layout.activity_list);
 
         fabButton = findViewById(R.id.fabButton);
-        //Récupère la toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            //associe la toolbar
-            setSupportActionBar(toolbar);
-            getSupportActionBar().setTitle(R.string.TitleMainActivity);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        }
+        //TOOLBAR
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        String villeAgence = prefs.getString("agenceName", " ");
+        setTitle(getText(R.string.app_name) + " " + villeAgence);
+
+        android.widget.Toolbar toolbar = findViewById(R.id.ourToolbar);
+        TextView mTitle = toolbar.findViewById(R.id.toolbar_title);
+        mTitle.setText(R.string.TitleMainActivity);
+
+
         //Deux fragments
         listFragment = (ListFragment) getSupportFragmentManager().findFragmentById(R.id.listFragment);
-
-
         //Dao Modele
         vehiculeDao = new VehiculeDao(MainActivity.this);
-
     }
 
     @Override
