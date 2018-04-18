@@ -52,6 +52,7 @@ public class RecycledModeleAdapter extends Adapter<RecycledModeleAdapter.ViewHol
         holder.mTypeVehicule.setText(lstVehicules.get(position).getTypeVehicule().getLibelle());
         holder.mKilometre.setText(lstVehicules.get(position).getKilometrage()+" Km");
         holder.mDesignation.setText(lstVehicules.get(position).getDesignation());
+        holder.mImmatriculation.setText(lstVehicules.get(position).getImmatriculation());
 
         if (holder.mItem.isEnLocation()){
             holder.cardView.setCardBackgroundColor(  res.getColor(R.color.colorRed));
@@ -90,6 +91,7 @@ public class RecycledModeleAdapter extends Adapter<RecycledModeleAdapter.ViewHol
         public final TextView mKilometre;
         public final TextView message;
         public final TextView mDesignation;
+        public final TextView mImmatriculation;
         public final CardView cardView;
         public Vehicule mItem;
 
@@ -104,6 +106,8 @@ public class RecycledModeleAdapter extends Adapter<RecycledModeleAdapter.ViewHol
             mPrixJour = view.findViewById(R.id.prixJour);
             mTypeVehicule = view.findViewById(R.id.typeVehicule);
             mKilometre = view.findViewById(R.id.kilometres);
+            mImmatriculation = view.findViewById(R.id.immatriculationVehicule);
+
         }
     }
 }

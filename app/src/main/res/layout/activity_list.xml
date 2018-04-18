@@ -39,8 +39,8 @@
             android:layout_marginEnd="30dp"
             android:background="@android:color/transparent"
             android:onClick="AddNewCar"
-            android:src="@android:drawable/ic_menu_add"
-            app:backgroundTint="@color/colorDark"
+            android:src="@android:drawable/ic_input_add"
+            app:backgroundTint="@color/colorPrimary700"
             app:fabSize="normal" />
     </RelativeLayout>
 </LinearLayout>

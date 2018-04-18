@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements ActivityMessage,
 
         fabButton = findViewById(R.id.fabButton);
 
+
         /*Intent intent = getIntent();
         if (intent != null) {
             idMarqueIntent = intent.getIntExtra("idMarque", 0);
@@ -180,8 +181,10 @@ public class MainActivity extends AppCompatActivity implements ActivityMessage,
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-                Intent intent = new Intent(MainActivity.this, FiltrerActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(MainActivity.this, FiltrerActivity.class));
+                break;
+            case R.id.action_stats:
+                startActivity(new Intent(MainActivity.this, StatsActivity.class));
                 break;
         }
         return true;

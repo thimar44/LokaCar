@@ -37,6 +37,7 @@ public class LocationDao {
     private ContentValues constructValuesDB(Location location) {
         ContentValues values = new ContentValues();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        values.put(DataContract.LOCATION_PRIX, location.getPrix());
         values.put(DataContract.LOCATION_IDCLIENT, location.getClient().getId());
         values.put(DataContract.LOCATION_IDVEHICULE, location.getVehicule().getId());
         values.put(DataContract.LOCATION_DATE_DEBUT, dateFormat.format(location.getDateDebut()));
@@ -83,6 +84,7 @@ public class LocationDao {
 
                 Integer idClient = cursor.getInt(cursor.getColumnIndex(DataContract.LOCATION_IDCLIENT));
                 Integer idVehicule = cursor.getInt(cursor.getColumnIndex(DataContract.LOCATION_IDVEHICULE));
+                Integer prix = cursor.getInt(cursor.getColumnIndex(DataContract.LOCATION_PRIX));
 
                 try {
                     DateDebut = format.parse(cursor.getString(cursor.getColumnIndex(DataContract.LOCATION_DATE_DEBUT)));
@@ -99,7 +101,7 @@ public class LocationDao {
                 }
                 Client client = clientDao.getClientFromId(idClient);
                 Vehicule vehicule = vehiculeDao.getVehiculeFromId(idVehicule);
-                location = new Location(client, vehicule, DateDebut, DateFin, kilometrageParcouru, etat);
+                location = new Location(client, vehicule, DateDebut, DateFin, kilometrageParcouru, etat, prix);
 
 
 
@@ -115,7 +117,7 @@ public class LocationDao {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         long id = -1;
         Cursor c = db.query(DataContract.TABLE_LOCATION_NAME, null,
-                "ID_VEHICULE = " + location.getVehicule().getId() + " AND ID_CLIENT = "+ location.getClient().getId(), null, null, null, null);
+                DataContract.LOCATION_ID+"=" + location.getId(), null, null, null, null);
 
         if (c.getCount() > 0) {
             update(location);
@@ -152,6 +154,7 @@ public class LocationDao {
                 Integer id = cursor.getInt(cursor.getColumnIndex(DataContract.LOCATION_ID));
                 Integer idClient = cursor.getInt(cursor.getColumnIndex(DataContract.LOCATION_IDCLIENT));
                 Integer idVehicule = cursor.getInt(cursor.getColumnIndex(DataContract.LOCATION_IDVEHICULE));
+                Integer prix = cursor.getInt(cursor.getColumnIndex(DataContract.LOCATION_PRIX));
                 try {
                     DateDebut = format.parse(cursor.getString(cursor.getColumnIndex(DataContract.LOCATION_DATE_DEBUT)));
                     DateFin = format.parse(cursor.getString(cursor.getColumnIndex(DataContract.LOCATION_DATE_FIN)));
@@ -167,7 +170,7 @@ public class LocationDao {
                 }
                 Client client = clientDao.getClientFromId(idClient);
                 Vehicule vehicule = vehiculeDao.getVehiculeFromId(idVehicule);
-                objects.add(new Location(id, client, vehicule, DateDebut, DateFin, kilometrageParcouru, etat));
+                objects.add(new Location(id, client, vehicule, DateDebut, DateFin, kilometrageParcouru, etat,prix));
 
             } while (cursor.moveToNext());
 

@@ -106,10 +106,10 @@ public class LoginActivity extends AppCompatActivity {
         marqueDao.insertOrUpdate(marque5);
 
 
-        Vehicule vehicule1 = new Vehicule(1, agenceTEST, typeVehicule1, typeCarburant1, 54700, 50, false, "Voiture numero une", "ER-874-DF", marque1);
-        Vehicule vehicule2 = new Vehicule(2, agenceTEST, typeVehicule2, typeCarburant3, 189560, 65, true, "Voiture numero quatre", "MF-365-GE", marque2);
-        Vehicule vehicule3 = new Vehicule(3, agenceTEST, typeVehicule1, typeCarburant2, 39845, 200, true, "Voiture numero trois", "ND-987-BF", marque4);
-        Vehicule vehicule4 = new Vehicule(4, agenceTEST, typeVehicule2, typeCarburant1, 76987, 89, false, "Voiture numero cinq", "QM-712-PO", marque5);
+        Vehicule vehicule1 = new Vehicule(1, agenceTEST, typeVehicule1, typeCarburant1, 54700, 50, false, "Clio 1", "ER-874-DF", marque1);
+        Vehicule vehicule2 = new Vehicule(2, agenceTEST, typeVehicule2, typeCarburant3, 189560, 65, true, "Clio 3", "MF-365-GE", marque2);
+        Vehicule vehicule3 = new Vehicule(3, agenceTEST, typeVehicule1, typeCarburant2, 39845, 200, true, "Classe C", "ND-987-BF", marque4);
+        Vehicule vehicule4 = new Vehicule(4, agenceTEST, typeVehicule2, typeCarburant1, 76987, 89, false, "Cooper", "QM-712-PO", marque5);
         vehiculeDao.insertOrUpdate(vehicule1);
         vehiculeDao.insertOrUpdate(vehicule2);
         vehiculeDao.insertOrUpdate(vehicule3);
@@ -118,11 +118,22 @@ public class LoginActivity extends AppCompatActivity {
         Client clientLocation = new Client(1,44140,633256985,"zz@gmail.fr","zidane","zinedine","12 rue","marseille");
         clientDao.insert(clientLocation);
 
-        Location location1 = new Location(1,clientLocation, vehicule2, new Date(118,02,2),new Date(118,02,2),0,true);
-        Location location2 = new Location(1,clientLocation, vehicule3, new Date(118,01,2),new Date(118,01,2),0,true);
+        Location location1 = new Location(1,clientLocation, vehicule2, new Date(118,02,2),new Date(118,02,2),0,true,0);
+        Location location2 = new Location(2,clientLocation, vehicule3, new Date(118,01,2),new Date(118,01,2),0,true,0);
 
-        locationDao.insert(location1);
-        locationDao.insert(location2);
+        locationDao.insertOrUpdate(location1);
+        locationDao.insertOrUpdate(location2);
+
+
+        Location locationFinie1 = new Location(3,clientLocation, vehicule2, new Date(118,02,2),new Date(118,02,2),0,false,100);
+        Location locationFinie2 = new Location(4,clientLocation, vehicule2, new Date(118,02,2),new Date(118,02,2),0,false,200);
+        Location locationFinie3 = new Location(5,clientLocation, vehicule3, new Date(118,02,2),new Date(118,02,2),0,false,300);
+        Location locationFinie4 = new Location(6,clientLocation, vehicule4, new Date(118,02,2),new Date(118,02,2),0,false,400);
+
+        locationDao.insertOrUpdate(locationFinie1);
+        locationDao.insertOrUpdate(locationFinie2);
+        locationDao.insertOrUpdate(locationFinie3);
+        locationDao.insertOrUpdate(locationFinie4);
 
     }
 

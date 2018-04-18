@@ -17,7 +17,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardBackgroundColor="@color/colorDark"
-        app:cardCornerRadius="15dp">
+        app:cardCornerRadius="15dp"
+        android:layout_margin="4dp"
+        app:cardElevation="5dp"
+        >
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -64,6 +68,14 @@
                         android:textSize="16sp"
                         android:textStyle="bold"
                         tools:hint="Desigration" />
+                    <TextView
+                        android:id="@+id/immatriculationVehicule"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        tools:hint="35-DJK-31" />
 
                     <TextView
                         android:id="@+id/typeEssence"

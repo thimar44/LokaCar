@@ -54,8 +54,9 @@ public class RetourActivity extends AppCompatActivity {
     private Vehicule vehicule;
     private Location location;
     private Client client;
-    private Date datefin;
 
+
+    private int prix;
     private LocationDao locationDao;
     private VehiculeDao vehiculeDao;
 
@@ -132,11 +133,8 @@ public class RetourActivity extends AppCompatActivity {
         long differenceInDays = TimeUnit.DAYS.convert(diffMillis, TimeUnit.MILLISECONDS);
         tvLocDuree.setText(differenceInDays+"");
 
-        long prix = differenceInDays * vehicule.getPrixJour();
+        prix = (int) differenceInDays * vehicule.getPrixJour();
         tvLocPrix.setText(prix+"€ TTC");
-
-
-
     }
 
     public void validerRetour(View view) {
@@ -149,6 +147,7 @@ public class RetourActivity extends AppCompatActivity {
             location.setDateFin(Calendar.getInstance().getTime());
             location.setEtat(false);
             location.setKilometrageParcouru(kmParcouru);
+            location.setPrix(prix);
             locationDao = new LocationDao(this.getApplicationContext());
             locationDao.update(location);
 

@@ -11,6 +11,7 @@ public class Location {
     private Vehicule vehicule;
     private Date dateDebut;
     private Date dateFin;
+    private int prix;
     private int kilometrageParcouru;
     private boolean etat; //true si véhicule non rendu et false si le véhicule a été retourné
     private List<Photo> photoEntrees;
@@ -20,16 +21,17 @@ public class Location {
     }
 
 
-    public Location(Client client, Vehicule vehicule, Date dateDebut, Date dateFin, int kilometrageParcouru, boolean etat) {
+    public Location(Client client, Vehicule vehicule, Date dateDebut, Date dateFin, int kilometrageParcouru, boolean etat, int prix) {
         this.client = client;
         this.vehicule = vehicule;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
         this.kilometrageParcouru = kilometrageParcouru;
         this.etat = etat;
+        this.prix = prix;
     }
 
-    public Location(int id, Client client, Vehicule vehicule, Date dateDebut, Date dateFin, int kilometrageParcouru, boolean etat) {
+    public Location(int id, Client client, Vehicule vehicule, Date dateDebut, Date dateFin, int kilometrageParcouru, boolean etat, int prix) {
         this.id = id;
         this.client = client;
         this.vehicule = vehicule;
@@ -37,9 +39,10 @@ public class Location {
         this.dateFin = dateFin;
         this.kilometrageParcouru = kilometrageParcouru;
         this.etat = etat;
+        this.prix = prix;
     }
 
-    public Location(Client client, Vehicule vehicule, Date dateDebut, Date dateFin, int kilometrageParcouru, boolean etat, List<Photo> photoEntrees, List<Photo> photoSorties) {
+    public Location(Client client, Vehicule vehicule, Date dateDebut, Date dateFin, int kilometrageParcouru, boolean etat, List<Photo> photoEntrees, List<Photo> photoSorties, int prix ) {
         this.client = client;
         this.vehicule = vehicule;
         this.dateDebut = dateDebut;
@@ -48,6 +51,7 @@ public class Location {
         this.etat = etat;
         this.photoEntrees = photoEntrees;
         this.photoSorties = photoSorties;
+        this.prix = prix;
     }
 
     public Client getClient() {
@@ -115,4 +119,8 @@ public class Location {
     public int getId() { return id; }
 
     public void setId(int id) { this.id = id; }
+
+    public int getPrix() { return prix; }
+
+    public void setPrix(int prix) { this.prix = prix; }
 }

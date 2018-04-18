@@ -60,6 +60,7 @@ public abstract class DataContract {
             + "LOCATION ("
             + "ID INTEGER PRIMARY KEY, "
             + "IDCLIENT INTEGER, "
+            + "PRIX INTEGER, "
             + "IDVEHICULE INTEGER, "
             + "DATE_DEBUT DATETIME,"
             + "DATE_FIN DATETIME,"
@@ -69,7 +70,7 @@ public abstract class DataContract {
 
     public final static String QUERY_DELETE_TABLE_LOCATION = "DROP TABLE IF EXISTS LOCATION";
     public final static String TABLE_LOCATION_NAME = "LOCATION";
-
+    public final static String LOCATION_PRIX = "PRIX";
     public final static String LOCATION_ID = "ID";
     public final static String LOCATION_IDCLIENT = "IDCLIENT";
     public final static String LOCATION_IDVEHICULE = "IDVEHICULE";

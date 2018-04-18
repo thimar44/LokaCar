@@ -13,6 +13,7 @@
     <string name="TitleLoginActivity">Connexion</string>
     <string name="TitleRetourActivity">Retour d\'un vehicule</string>
     <string name="TitleFiltrerActivity">Filtrer les vehicules</string>
+    <string name="TitleStatsActivity">Chiffres d\'affaires</string>
 
     <!-- BUTTONS -->
     <string name="valider">Valider</string>
