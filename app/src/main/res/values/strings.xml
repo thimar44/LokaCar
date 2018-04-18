@@ -3,6 +3,8 @@
 
     <string name="action_settings">Settings</string>
     <string name="login">Login :</string>
+    <string name="filtrer">Filtrer</string>
+
 
     <!-- TITLES -->
     <string name="TitleMainActivity">Liste des vehicules</string>
@@ -10,10 +12,12 @@
     <string name="TitleAddCarActivity">Ajout d\'un vehicule</string>
     <string name="TitleLoginActivity">Connexion</string>
     <string name="TitleRetourActivity">Retour d\'un vehicule</string>
+    <string name="TitleFiltrerActivity">Filtrer les vehicules</string>
 
     <!-- BUTTONS -->
     <string name="valider">Valider</string>
     <string name="annuler">Annuler</string>
+    <string name="rechercher">Rechercher</string>
 
     <!-- LOCATION STRINGS -->
     <string name="informations_client">Informations Client</string>
@@ -34,4 +38,5 @@
     <string name="kilometrage">Kilométrage</string>
     <string name="ajouterPhoto">Ajouter une photo</string>
     <string name="prixJour">Prix à la journée</string>
+    <string name="etatVehicule">Est loué ?</string>
 </resources>

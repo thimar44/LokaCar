@@ -2,6 +2,7 @@ package fr.eni.lokacar.lokacar.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -20,6 +21,9 @@ import fr.eni.lokacar.lokacar.been.Vehicule;
 import fr.eni.lokacar.lokacar.helper.DataContract;
 import fr.eni.lokacar.lokacar.helper.ModeleHelper;
 
+import static android.content.Context.MODE_PRIVATE;
+import static fr.eni.lokacar.lokacar.helper.DataContract.MY_PREFS_NAME;
+
 public class VehiculeDao {
     private ModeleHelper dbHelper;
     private AgenceDao agenceDao;
@@ -27,6 +31,7 @@ public class VehiculeDao {
     private TypeCarburantDao typeCarburantDao;
     private MarqueDao marqueDao;
     private PhotoDao photoDao;
+    private SharedPreferences prefs;
 
     public VehiculeDao(Context context) {
         this.dbHelper = new ModeleHelper(context);
@@ -35,6 +40,7 @@ public class VehiculeDao {
         this.typeCarburantDao = new TypeCarburantDao(context);
         this.photoDao = new PhotoDao(context);
         this.marqueDao = new MarqueDao(context);
+        prefs = context.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
     }
 
     /**
@@ -63,9 +69,9 @@ public class VehiculeDao {
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         long id = -1;
-        try{
+        try {
             id = db.insert(DataContract.TABLE_VEHICULE_NAME, null, constructValuesDB(vehicule));
-        }catch (SQLException e){
+        } catch (SQLException e) {
             Log.v("SQL => ", e.getMessage());
         }
 
@@ -77,7 +83,7 @@ public class VehiculeDao {
 
     public long insertOrUpdate(Vehicule vehicule) {
         long id = -1;
-        if(vehicule.getId() > 0) {
+        if (vehicule.getId() > 0) {
             SQLiteDatabase db = dbHelper.getWritableDatabase();
 
             Cursor c = db.query(DataContract.TABLE_VEHICULE_NAME, null,
@@ -98,9 +104,13 @@ public class VehiculeDao {
 
     public List<Vehicule> getListe() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+
+        int idAgenceShared = prefs.getInt("idAgence", 0);
+
         Cursor cursor = db.query(
                 DataContract.TABLE_VEHICULE_NAME, null,
-                null,
+                DataContract.VEHICULE_IDAGENCE + "=" + idAgenceShared,
                 null,
                 null,
                 null,
@@ -142,6 +152,8 @@ public class VehiculeDao {
     }
 
     public Vehicule getVehiculeFromId(int id) {
+
+
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.query(
                 DataContract.TABLE_VEHICULE_NAME, null,
@@ -196,6 +208,69 @@ public class VehiculeDao {
 
     public void update(Vehicule vehicule) {
         update(vehicule.getId(), vehicule);
+    }
+
+    public List<Vehicule> getListeWithParams(TypeVehicule typeVehicule, Marque marque, TypeCarburant typeCarburant, Boolean etat) {
+
+        int idAgenceShared = prefs.getInt("idAgence", 0);
+        StringBuilder builder = new StringBuilder();
+        builder.append( DataContract.VEHICULE_IDAGENCE + " = " + String.valueOf(idAgenceShared) + " AND ");
+
+        if (typeCarburant != null) {
+            builder.append( DataContract.VEHICULE_IDTYPE_CARBURANT + " = " + String.valueOf(typeCarburant.getId() + " AND "));
+        }
+        if (typeVehicule != null) {
+            builder.append( DataContract.VEHICULE_IDTYPE_VEHICULE + " = " + String.valueOf(typeVehicule.getId() + " AND "));
+        }
+        if (marque != null) {
+            builder.append( DataContract.VEHICULE_IDMARQUE + " = " + String.valueOf(marque.getId()) + " AND ");
+        }
+
+        int etatVehiculeParam = etat ? 1 : 0;
+        builder.append(  DataContract.VEHICULE_ENLOCATION + " = " + etatVehiculeParam);
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query(
+                DataContract.TABLE_VEHICULE_NAME, null,
+                builder.toString(),
+                null,
+                null,
+                null,
+                null);
+
+        List<Vehicule> objects = new ArrayList<Vehicule>();
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                boolean isEnLocation = false;
+
+                int id = cursor.getInt(cursor.getColumnIndex(DataContract.VEHICULE_ID));
+                int idAgence = cursor.getInt(cursor.getColumnIndex(DataContract.VEHICULE_IDAGENCE));
+                int idTypevehicule = cursor.getInt(cursor.getColumnIndex(DataContract.VEHICULE_IDTYPE_VEHICULE));
+                int idTypeCarburant = cursor.getInt(cursor.getColumnIndex(DataContract.VEHICULE_IDTYPE_CARBURANT));
+                int kilometrage = cursor.getInt(cursor.getColumnIndex(DataContract.VEHICULE_KILOMETRAGE));
+                int prixJour = cursor.getInt(cursor.getColumnIndex(DataContract.VEHICULE_PRIXJOUR));
+                int enLocation = cursor.getInt(cursor.getColumnIndex(DataContract.VEHICULE_ENLOCATION));
+                if (enLocation == 1) {
+                    isEnLocation = true;
+                }
+                String designation = cursor.getString(cursor.getColumnIndex(DataContract.VEHICULE_DESIGNATION));
+                String immatriculation = cursor.getString(cursor.getColumnIndex(DataContract.VEHICULE_IMMATRICULATION));
+                int idMarque = cursor.getInt(cursor.getColumnIndex(DataContract.VEHICULE_IDMARQUE));
+
+                Agence agence = agenceDao.getAgenceFromId(idAgence);
+                TypeVehicule typeVehicule2 = typeVehiculeDao.getTypeVehiculeFromId(idTypevehicule);
+                TypeCarburant typeCarburant2 = typeCarburantDao.getTypeCarburantFromId(idTypeCarburant);
+                Marque marque2 = marqueDao.getMarqueFromId(idMarque);
+
+                objects.add(new Vehicule(id, agence, typeVehicule2, typeCarburant2, kilometrage, prixJour, isEnLocation, designation, immatriculation, marque2));
+
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+
+        return objects;
     }
 }
 
