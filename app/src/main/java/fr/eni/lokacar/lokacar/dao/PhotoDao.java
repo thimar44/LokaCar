@@ -28,7 +28,7 @@ public class PhotoDao {
      */
     private ContentValues constructValuesDB(Photo photo) {
         ContentValues values = new ContentValues();
-        values.put(DataContract.PHOTO_ID, photo.getId());
+        //values.put(DataContract.PHOTO_ID, photo.getId());
         values.put(DataContract.PHOTO_URI, photo.getUri());
 
         return values;
@@ -93,7 +93,7 @@ public class PhotoDao {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.query(
                 DataContract.TABLE_PHOTO_NAME, null,
-                "ID = " + id,
+                "ID=" + id,
                 null,
                 null,
                 null,

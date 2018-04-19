@@ -1,8 +1,12 @@
 package fr.eni.lokacar.lokacar;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +25,7 @@ import fr.eni.lokacar.lokacar.been.Client;
 import fr.eni.lokacar.lokacar.been.Location;
 import fr.eni.lokacar.lokacar.been.Marque;
 import fr.eni.lokacar.lokacar.been.Personne;
+import fr.eni.lokacar.lokacar.been.Photo;
 import fr.eni.lokacar.lokacar.been.TypeCarburant;
 import fr.eni.lokacar.lokacar.been.TypeVehicule;
 import fr.eni.lokacar.lokacar.been.Vehicule;
@@ -29,6 +34,7 @@ import fr.eni.lokacar.lokacar.dao.ClientDao;
 import fr.eni.lokacar.lokacar.dao.LocationDao;
 import fr.eni.lokacar.lokacar.dao.MarqueDao;
 import fr.eni.lokacar.lokacar.dao.PersonneDao;
+import fr.eni.lokacar.lokacar.dao.PhotoDao;
 import fr.eni.lokacar.lokacar.dao.TypeCarburantDao;
 import fr.eni.lokacar.lokacar.dao.TypeVehiculeDao;
 import fr.eni.lokacar.lokacar.dao.VehiculeDao;
@@ -47,13 +53,14 @@ public class LoginActivity extends AppCompatActivity {
     private MarqueDao marqueDao;
     private LocationDao locationDao;
     private ClientDao clientDao;
+    private PhotoDao photoDao;
+
+    private static int MY_PERMISSIONS_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-
 
         //TOOLBAR
         setTitle(getText(R.string.app_name));
@@ -74,6 +81,7 @@ public class LoginActivity extends AppCompatActivity {
         marqueDao = new MarqueDao(this.getApplicationContext());
         locationDao = new LocationDao(this.getApplicationContext());
         clientDao = new ClientDao(this.getApplicationContext());
+        photoDao = new PhotoDao(this.getApplicationContext());
         //ENREGISTREMENT DONNEES
 
         Agence agenceTEST = agenceTEST = new Agence(1, 44000, "NANTES", "10 rue du con qui dort", "Saint Herblain");
@@ -105,17 +113,20 @@ public class LoginActivity extends AppCompatActivity {
         marqueDao.insertOrUpdate(marque4);
         marqueDao.insertOrUpdate(marque5);
 
+        Photo photo = new Photo("TEST");
+        int id = (int) photoDao.insert(photo);
+        photo.setId(id);
 
-        Vehicule vehicule1 = new Vehicule(1, agenceTEST, typeVehicule1, typeCarburant1, 54700, 50, false, "Clio 1", "ER-874-DF", marque1);
-        Vehicule vehicule2 = new Vehicule(2, agenceTEST, typeVehicule2, typeCarburant3, 189560, 65, true, "Clio 3", "MF-365-GE", marque2);
-        Vehicule vehicule3 = new Vehicule(3, agenceTEST, typeVehicule1, typeCarburant2, 39845, 200, true, "Classe C", "ND-987-BF", marque4);
-        Vehicule vehicule4 = new Vehicule(4, agenceTEST, typeVehicule2, typeCarburant1, 76987, 89, false, "Cooper", "QM-712-PO", marque5);
+        Vehicule vehicule1 = new Vehicule(1, agenceTEST, typeVehicule1, typeCarburant1, 54700, 50, false, "Clio 1", "ER-874-DF", photo, marque1);
+        Vehicule vehicule2 = new Vehicule(2, agenceTEST, typeVehicule2, typeCarburant3, 189560, 65, true, "Clio 3", "MF-365-GE",photo, marque2);
+        Vehicule vehicule3 = new Vehicule(3, agenceTEST, typeVehicule1, typeCarburant2, 39845, 200, true, "Classe C", "ND-987-BF",photo, marque4);
+        Vehicule vehicule4 = new Vehicule(4, agenceTEST, typeVehicule2, typeCarburant1, 76987, 89, false, "Cooper", "QM-712-PO", photo,marque5);
         vehiculeDao.insertOrUpdate(vehicule1);
         vehiculeDao.insertOrUpdate(vehicule2);
         vehiculeDao.insertOrUpdate(vehicule3);
         vehiculeDao.insertOrUpdate(vehicule4);
 
-        Client clientLocation = new Client(1,44140,633256985,"zz@gmail.fr","zidane","zinedine","12 rue","marseille");
+        /*Client clientLocation = new Client(1,44140,633256985,"zz@gmail.fr","zidane","zinedine","12 rue","marseille");
         clientDao.insert(clientLocation);
 
         Location location1 = new Location(1,clientLocation, vehicule2, new Date(118,02,2),new Date(118,02,2),0,true,0);
@@ -133,7 +144,7 @@ public class LoginActivity extends AppCompatActivity {
         locationDao.insertOrUpdate(locationFinie1);
         locationDao.insertOrUpdate(locationFinie2);
         locationDao.insertOrUpdate(locationFinie3);
-        locationDao.insertOrUpdate(locationFinie4);
+        locationDao.insertOrUpdate(locationFinie4);*/
 
     }
 

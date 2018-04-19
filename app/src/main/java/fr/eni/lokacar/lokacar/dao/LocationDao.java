@@ -13,6 +13,7 @@ import java.util.List;
 
 import fr.eni.lokacar.lokacar.been.Client;
 import fr.eni.lokacar.lokacar.been.Location;
+import fr.eni.lokacar.lokacar.been.Marque;
 import fr.eni.lokacar.lokacar.been.Vehicule;
 import fr.eni.lokacar.lokacar.helper.DataContract;
 import fr.eni.lokacar.lokacar.helper.ModeleHelper;
@@ -189,9 +190,56 @@ public class LocationDao {
         db.close();
     }
     
-    public void update(Location location) {
+    public long update(Location location) {
         update(location.getId(), location);
+        return location.getId();
     }
 
 
+    public Location getLocationFromId(int id) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query(
+                DataContract.TABLE_LOCATION_NAME, null,
+                "ID=" + id,
+                null,
+                null,
+                null,
+                null);
+
+        Location object = null;
+
+        if (cursor != null && cursor.moveToFirst()) {
+
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Boolean etat = false;
+            Date DateDebut = null;
+            Date DateFin = null;
+
+            Integer id2 = cursor.getInt(cursor.getColumnIndex(DataContract.LOCATION_ID));
+            Integer idClient = cursor.getInt(cursor.getColumnIndex(DataContract.LOCATION_IDCLIENT));
+            Integer idVehicule = cursor.getInt(cursor.getColumnIndex(DataContract.LOCATION_IDVEHICULE));
+            Integer prix = cursor.getInt(cursor.getColumnIndex(DataContract.LOCATION_PRIX));
+            try {
+                DateDebut = format.parse(cursor.getString(cursor.getColumnIndex(DataContract.LOCATION_DATE_DEBUT)));
+                DateFin = format.parse(cursor.getString(cursor.getColumnIndex(DataContract.LOCATION_DATE_FIN)));
+            } catch (Exception e) {
+                Log.e("LOG => ", e.getMessage());
+            }
+            int kilometrageParcouru = cursor.getInt(cursor.getColumnIndex(DataContract.LOCATION_KILOMETRAGE_PARCOURU));
+            int state = cursor.getInt(cursor.getColumnIndex(DataContract.LOCATION_ETAT));
+            if (state == 1) {
+                etat = true;
+            } else {
+                etat = false;
+            }
+            Client client = clientDao.getClientFromId(idClient);
+            Vehicule vehicule = vehiculeDao.getVehiculeFromId(idVehicule);
+
+            object = new Location(id2, client, vehicule, DateDebut, DateFin, kilometrageParcouru, etat,prix);
+
+            cursor.close();
+        }
+
+        return object;
+    }
 }

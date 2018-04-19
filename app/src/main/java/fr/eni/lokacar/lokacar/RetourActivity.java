@@ -1,5 +1,6 @@
 package fr.eni.lokacar.lokacar;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -34,9 +35,13 @@ import java.util.concurrent.TimeUnit;
 
 import fr.eni.lokacar.lokacar.been.Client;
 import fr.eni.lokacar.lokacar.been.Location;
+import fr.eni.lokacar.lokacar.been.LocationPhoto;
+import fr.eni.lokacar.lokacar.been.Photo;
 import fr.eni.lokacar.lokacar.been.Vehicule;
 import fr.eni.lokacar.lokacar.dao.ClientDao;
 import fr.eni.lokacar.lokacar.dao.LocationDao;
+import fr.eni.lokacar.lokacar.dao.LocationPhotoDao;
+import fr.eni.lokacar.lokacar.dao.PhotoDao;
 import fr.eni.lokacar.lokacar.dao.VehiculeDao;
 
 import static fr.eni.lokacar.lokacar.helper.DataContract.MY_PREFS_NAME;
@@ -58,6 +63,7 @@ public class RetourActivity extends AppCompatActivity {
     private TextView tvClientAdresse;
     private TextView tvClientCp;
     private TextView tvClientVille;
+    private ImageView photoVoiture;
 
     private TextView tvLocPrix;
     private TextView tvLocDuree;
@@ -72,6 +78,8 @@ public class RetourActivity extends AppCompatActivity {
     private int prix;
     private LocationDao locationDao;
     private VehiculeDao vehiculeDao;
+    private PhotoDao photoDao;
+    private LocationPhotoDao locationPhotoDao;
 
     private List<String> mCurrentPhotoPath = new ArrayList<>();
     private static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -96,12 +104,14 @@ public class RetourActivity extends AppCompatActivity {
         int vehiculeId = intent.getIntExtra("car", 0);
 
 
-        locationDao = new LocationDao(this.getApplicationContext());
+        Context context = this.getApplicationContext();
+        locationDao = new LocationDao(context);
+        photoDao = new PhotoDao(context);
+        locationPhotoDao = new LocationPhotoDao(context);
+
         location = locationDao.getCurrentLocationWithVehiculeId(vehiculeId);
         vehicule = location.getVehicule();
         client = location.getClient();
-
-
         tvVehMarque = findViewById(R.id.marque);
         tvVehMarque.setText(vehicule.getMarque().getLibelle());
         tvVehDesignation = findViewById(R.id.designation);
@@ -117,6 +127,22 @@ public class RetourActivity extends AppCompatActivity {
         tvVehPrixJour = findViewById(R.id.prixJour);
         tvVehPrixJour.setText(vehicule.getPrixJour() + "€ /j ");
 
+        photoVoiture = findViewById(R.id.photoVehicule);
+        //Recupération de la photo
+        try {
+            String srcPhoto = vehicule.getPhoto().getUri();
+            if (srcPhoto != null) {
+                File imgFile = new File(srcPhoto);
+                if (imgFile.exists()) {
+                    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                    photoVoiture.setImageBitmap(myBitmap);
+                }
+            }
+
+        } catch (Exception e) {
+            Log.v("Prb image -> ", e.getMessage());
+        }
+
         tvClientNom = findViewById(R.id.clientRetourNom);
         tvClientPrenom = findViewById(R.id.clientRetourPreNom);
         tvClientEmail = findViewById(R.id.clientRetourEmail);
@@ -128,9 +154,9 @@ public class RetourActivity extends AppCompatActivity {
         tvClientNom.setText(client.getNom());
         tvClientPrenom.setText(client.getPrenom());
         tvClientEmail.setText(client.getMail());
-        tvClientTel.setText(client.getNumeroTelephone()+"");
+        tvClientTel.setText(client.getNumeroTelephone() + "");
         tvClientAdresse.setText(client.getAdresse());
-        tvClientCp.setText(client.getCodePostal()+"");
+        tvClientCp.setText(client.getCodePostal() + "");
         tvClientVille.setText(client.getVille());
 
         tvLocDateDebut = findViewById(R.id.locationRetourDateDebut);
@@ -140,18 +166,18 @@ public class RetourActivity extends AppCompatActivity {
 
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.setTime(location.getDateDebut());
-        String day = calendar.get(Calendar.DAY_OF_MONTH)+"";
-        String month =  (calendar.get(Calendar.MONTH)+1)+"";
-        String year =  calendar.get(Calendar.YEAR)+"";
+        String day = calendar.get(Calendar.DAY_OF_MONTH) + "";
+        String month = (calendar.get(Calendar.MONTH) + 1) + "";
+        String year = calendar.get(Calendar.YEAR) + "";
 
         Date DateFin = Calendar.getInstance().getTime();
-        tvLocDateDebut.setText(day + "/" + month+"/" + year);
-        long diffMillis= Math.abs(DateFin.getTime() - location.getDateDebut().getTime());
+        tvLocDateDebut.setText(day + "/" + month + "/" + year);
+        long diffMillis = Math.abs(DateFin.getTime() - location.getDateDebut().getTime());
         long differenceInDays = TimeUnit.DAYS.convert(diffMillis, TimeUnit.MILLISECONDS);
-        tvLocDuree.setText(differenceInDays+"");
+        tvLocDuree.setText(differenceInDays + "");
 
         prix = (int) differenceInDays * vehicule.getPrixJour();
-        tvLocPrix.setText(prix+"€ TTC");
+        tvLocPrix.setText(prix + "€ TTC");
     }
 
     public void validerRetour(View view) {
@@ -159,19 +185,30 @@ public class RetourActivity extends AppCompatActivity {
 
             int kmRetour = Integer.valueOf(edLocKm.getText().toString());
             int kmParcouru = kmRetour - vehicule.getKilometrage();
-
-
             location.setDateFin(Calendar.getInstance().getTime());
             location.setEtat(false);
             location.setKilometrageParcouru(kmParcouru);
             location.setPrix(prix);
             locationDao = new LocationDao(this.getApplicationContext());
-            locationDao.update(location);
-
+            int idLocation = (int) locationDao.update(location);
+            location.setId(idLocation);
             vehicule.setEnLocation(false);
             vehicule.setKilometrage(kmRetour);
             vehiculeDao = new VehiculeDao(this.getApplicationContext());
             vehiculeDao.update(vehicule);
+
+            for (String path : mCurrentPhotoPath) {
+                Photo photo = null;
+                if (path != "") {
+                    photo = new Photo(path);
+                    long id = photoDao.insert(photo);
+                    if (id != 0) {
+                        photo.setId((int) id);
+                        LocationPhoto newLocationPhoto = new LocationPhoto(location, photo, "RETOUR");
+                        locationPhotoDao.insert(newLocationPhoto);
+                    }
+                }
+            }
 
             AlertDialog.Builder builder = new AlertDialog.Builder(RetourActivity.this);
             builder.setMessage("Voulez vous envoyer une facture au client")
@@ -183,7 +220,6 @@ public class RetourActivity extends AppCompatActivity {
                 }
             });
 
-
             builder.setNegativeButton("non", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     finish();
@@ -191,6 +227,7 @@ public class RetourActivity extends AppCompatActivity {
             });
             AlertDialog dialog = builder.create();
             dialog.show();
+
 
         } else {
             Toast.makeText(RetourActivity.this, "Vérifiez la saisie du kilométrage", Toast.LENGTH_LONG).show();
@@ -207,7 +244,7 @@ public class RetourActivity extends AppCompatActivity {
                 photoFile = createImageFile();
             } catch (IOException ex) {
                 // Error occurred while creating the File
-                Log.v("LOG -> " , ex.getMessage());
+                Log.v("LOG -> ", ex.getMessage());
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
@@ -259,8 +296,17 @@ public class RetourActivity extends AppCompatActivity {
 
     public boolean validateForm() {
         boolean formIsValide = true;
-        if ("".equals(edLocKm.getText().toString())) formIsValide = false;
-        if(vehicule.getKilometrage()>Integer.valueOf(edLocKm.getText().toString())) formIsValide = false;
+        try {
+            if ("".equals(edLocKm.getText().toString())) {
+                formIsValide = false;
+            } else {
+                if (vehicule.getKilometrage() > Integer.valueOf(edLocKm.getText().toString()))
+                    formIsValide = false;
+            }
+        } catch (Exception e) {
+            Log.v("Log ->", e.getMessage());
+            formIsValide = false;
+        }
         return formIsValide;
     }
 

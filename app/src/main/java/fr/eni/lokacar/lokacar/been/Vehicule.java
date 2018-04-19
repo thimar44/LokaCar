@@ -13,13 +13,13 @@ public class Vehicule {
     private boolean enLocation;
     private String designation;
     private String immatriculation;
-    private List<Photo> photos;
+    private Photo photo;
     private Marque marque;
 
     public Vehicule() {
     }
 
-    public Vehicule(Agence agence, TypeVehicule typeVehicule, TypeCarburant typeCarburant, int kilometrage, int prixJour, boolean enLocation, String designation, String immatriculation, List<Photo> photos, Marque marque) {
+    public Vehicule(Agence agence, TypeVehicule typeVehicule, TypeCarburant typeCarburant, int kilometrage, int prixJour, boolean enLocation, String designation, String immatriculation, Photo photo, Marque marque) {
         this.agence = agence;
         this.typeVehicule = typeVehicule;
         this.typeCarburant = typeCarburant;
@@ -28,11 +28,11 @@ public class Vehicule {
         this.enLocation = enLocation;
         this.designation = designation;
         this.immatriculation = immatriculation;
-        this.photos = photos;
+        this.photo = photo;
         this.marque = marque;
     }
 
-    public Vehicule(int id, Agence agence, TypeVehicule typeVehicule, TypeCarburant typeCarburant, int kilometrage, int prixJour, boolean enLocation, String designation, String immatriculation, List<Photo> photos, Marque marque) {
+    public Vehicule(int id, Agence agence, TypeVehicule typeVehicule, TypeCarburant typeCarburant, int kilometrage, int prixJour, boolean enLocation, String designation, String immatriculation, Photo photo, Marque marque) {
         this.id = id;
         this.agence = agence;
         this.typeVehicule = typeVehicule;
@@ -42,7 +42,7 @@ public class Vehicule {
         this.enLocation = enLocation;
         this.designation = designation;
         this.immatriculation = immatriculation;
-        this.photos = photos;
+        this.photo = photo;
         this.marque = marque;
     }
 
@@ -151,11 +151,11 @@ public class Vehicule {
         this.immatriculation = immatriculation;
     }
 
-    public List<Photo> getPhotos() {
-        return photos;
+    public Photo getPhoto() {
+        return photo;
     }
 
-    public void setPhotos(List<Photo> photos) {
-        this.photos = photos;
+    public void setPhoto(Photo photo) {
+        this.photo = photo;
     }
 }

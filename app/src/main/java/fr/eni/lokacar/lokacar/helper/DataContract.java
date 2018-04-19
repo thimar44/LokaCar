@@ -3,7 +3,7 @@ package fr.eni.lokacar.lokacar.helper;
 public abstract class DataContract {
     public static final String MY_PREFS_NAME = "MyPrefsFile";
     public final static String DATABASE_NAME = "lokacar.db";
-    public final static int DATABASE_VERSION = 2;
+    public final static int DATABASE_VERSION = 6;
 
     /**
      * TABLE AGENCE
@@ -165,7 +165,6 @@ public abstract class DataContract {
     /**
      * TABLE Vehicule
      */
-    //TODO - VOIR POUR PHOTO
 
     public final static String VEHICULE_CREATE_TABLE = "CREATE TABLE IF NOT EXISTS "
             + "VEHICULE ("
@@ -173,6 +172,7 @@ public abstract class DataContract {
             + "IDAGENCE INTEGER,"
             + "IDTYPE_VEHICULE INTEGER,"
             + "IDTYPE_CARBURANT INTEGER,"
+            + "ID_PHOTO INTEGER,"
             + "IDMARQUE INTEGER,"
             + "KILOMETRAGE INTEGER,"
             + "PRIXJOUR INTEGER,"
@@ -186,6 +186,7 @@ public abstract class DataContract {
 
     public final static String VEHICULE_ID = "ID";
     public final static String VEHICULE_IDAGENCE = "IDAGENCE";
+    public final static String VEHICULE_IDPHOTO = "ID_PHOTO";
     public final static String VEHICULE_IDTYPE_VEHICULE = "IDTYPE_VEHICULE";
     public final static String VEHICULE_IDTYPE_CARBURANT = "IDTYPE_CARBURANT";
     public final static String VEHICULE_IDMARQUE = "IDMARQUE";
@@ -195,4 +196,23 @@ public abstract class DataContract {
     public final static String VEHICULE_DESIGNATION = "DESIGNATION";
     public final static String VEHICULE_IMMATRICULATION = "IMMATRICULATION";
 
+    /**
+     * TABLE LocationPhoto
+     */
+
+    public final static String LOCATION_PHOTO_CREATE_TABLE = "CREATE TABLE IF NOT EXISTS "
+            + "LOCATION_PHOTO ("
+            + "ID INTEGER PRIMARY KEY, "
+            + "IDLOCATION INTEGER,"
+            + "IDPHOTO INTEGER,"
+            + "TYPE TEXT"
+            + ")";
+
+    public final static String QUERY_DELETE_TABLE_LOCATION_PHOTO = "DROP TABLE IF EXISTS LOCATION_PHOTO";
+    public final static String TABLE_LOCATION_PHOTO_NAME = "LOCATION_PHOTO";
+
+    public final static String LOCATION_PHOTO_ID = "ID";
+    public final static String LOCATION_PHOTO_IDLOCATION = "IDLOCATION";
+    public final static String LOCATION_PHOTO_IDPHOTO = "IDPHOTO";
+    public final static String LOCATION_PHOTO_TYPE = "TYPE";
 }

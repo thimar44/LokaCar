@@ -1,5 +1,6 @@
 package fr.eni.lokacar.lokacar;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -34,14 +35,18 @@ import java.util.List;
 import fr.eni.lokacar.lokacar.been.Agence;
 import fr.eni.lokacar.lokacar.been.Client;
 import fr.eni.lokacar.lokacar.been.Location;
+import fr.eni.lokacar.lokacar.been.LocationPhoto;
 import fr.eni.lokacar.lokacar.been.Marque;
+import fr.eni.lokacar.lokacar.been.Photo;
 import fr.eni.lokacar.lokacar.been.TypeCarburant;
 import fr.eni.lokacar.lokacar.been.TypeVehicule;
 import fr.eni.lokacar.lokacar.been.Vehicule;
 import fr.eni.lokacar.lokacar.dao.AgenceDao;
 import fr.eni.lokacar.lokacar.dao.ClientDao;
 import fr.eni.lokacar.lokacar.dao.LocationDao;
+import fr.eni.lokacar.lokacar.dao.LocationPhotoDao;
 import fr.eni.lokacar.lokacar.dao.MarqueDao;
+import fr.eni.lokacar.lokacar.dao.PhotoDao;
 import fr.eni.lokacar.lokacar.dao.TypeCarburantDao;
 import fr.eni.lokacar.lokacar.dao.TypeVehiculeDao;
 import fr.eni.lokacar.lokacar.dao.VehiculeDao;
@@ -67,10 +72,13 @@ public class LouerActivity extends AppCompatActivity {
     private TextView tvVehImmatriculation;
     private TextView tvVehKilometrage;
     private TextView tvVehPrixJour;
+    private ImageView photoVoiture;
 
     private ClientDao clientDao;
     private LocationDao locationDao;
     private VehiculeDao vehiculeDao;
+    private PhotoDao photoDao;
+    private LocationPhotoDao locationPhotoDao;
 
     private List<String> mCurrentPhotoPath = new ArrayList<>();
 
@@ -96,7 +104,12 @@ public class LouerActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         int vehiculeId = intent.getIntExtra("car", 0);
-        vehiculeDao = new VehiculeDao(this.getApplicationContext());
+
+        Context context = this.getApplicationContext();
+        locationDao = new LocationDao(context);
+        photoDao = new PhotoDao(context);
+        locationPhotoDao = new LocationPhotoDao(context);
+        vehiculeDao = new VehiculeDao(context);
 
         vehicule = vehiculeDao.getVehiculeFromId(vehiculeId);
 
@@ -114,6 +127,23 @@ public class LouerActivity extends AppCompatActivity {
         tvVehKilometrage.setText(vehicule.getKilometrage() + "");
         tvVehPrixJour = findViewById(R.id.prixJour);
         tvVehPrixJour.setText(vehicule.getPrixJour() + "€ /j ");
+
+
+        photoVoiture = findViewById(R.id.photoVehicule);
+        //Recupération de la photo
+        try{
+            String srcPhoto = vehicule.getPhoto().getUri();
+            if (srcPhoto != null) {
+                File imgFile = new File(srcPhoto);
+                if (imgFile.exists()) {
+                    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                    photoVoiture.setImageBitmap(myBitmap);
+                }
+            }
+
+        }catch(Exception e){
+            Log.v("Prb image -> ", e.getMessage());
+        }
 
 
         edClientNom = findViewById(R.id.clientNom);
@@ -165,10 +195,25 @@ public class LouerActivity extends AppCompatActivity {
             location.setKilometrageParcouru(0);
 
             locationDao = new LocationDao(this.getApplicationContext());
-            locationDao.insert(location);
+            int idLocation = (int) locationDao.insert(location);
+            location.setId(idLocation);
 
             vehicule.setEnLocation(true);
             vehiculeDao.update(vehicule);
+
+
+            for (String path : mCurrentPhotoPath) {
+                Photo photo = null;
+                if (path != "") {
+                    photo = new Photo(path);
+                    long id = photoDao.insert(photo);
+                    if (id != 0) {
+                        photo.setId((int) id);
+                        LocationPhoto newLocationPhoto = new LocationPhoto(location, photo, "LOUER");
+                        locationPhotoDao.insert(newLocationPhoto);
+                    }
+                }
+            }
 
 
             AlertDialog.Builder builder = new AlertDialog.Builder(LouerActivity.this);

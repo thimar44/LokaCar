@@ -22,12 +22,13 @@
                 android:orientation="horizontal"
                 android:padding="10dp">
 
-                <Button
+                <ImageView
+                    android:id="@+id/photoVehicule"
+                    android:layout_height="75dp"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp"
                     android:layout_weight="0.3"
-                    android:background="#4A148C" />
+                    android:paddingBottom="0dp"
+                    android:src="@drawable/voitureok" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -253,7 +254,6 @@
                     android:paddingRight="@dimen/padding_form">
 
                     <TextView
-
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.3"
@@ -278,14 +278,6 @@
                 android:background="@color/colorPrimaryDark" />
 
             <LinearLayout
-                android:id="@+id/layoutPictures"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-            </LinearLayout>
-
-            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -300,6 +292,14 @@
                         android:onClick="addPhotoLouer"
                         android:text="Ajouter une photo de départ" />
                 </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutPictures"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
             </LinearLayout>
 

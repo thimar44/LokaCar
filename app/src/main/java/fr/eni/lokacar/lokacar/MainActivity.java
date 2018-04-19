@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import java.util.ArrayList;
@@ -50,12 +51,29 @@ public class MainActivity extends AppCompatActivity implements ActivityMessage,
     private TypeCarburantDao typeCarburantDao;
 
     private static boolean estFiltree;
-    private static int MY_PERMISSIONS_REQUEST = 1;
+    private final static int MY_PERMISSIONS_REQUEST_CAMERA = 1;
+    private final static int MY_PERMISSIONS_REQUEST_CONTENT = 2;
 
     private int idMarqueIntent;
     private int idTypeCarburantIntent;
     private int idTypeVehiculeIntent;
     private String etatIntent;
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_CAMERA:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    Intent intent = new Intent(this, AddCarActivity.class);
+                    startActivity(intent);
+
+                } else {
+                    Toast.makeText(this, "Please grant camera permission", Toast.LENGTH_SHORT).show();
+                }
+                return;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,45 +82,6 @@ public class MainActivity extends AppCompatActivity implements ActivityMessage,
 
         fabButton = findViewById(R.id.fabButton);
 
-        // Here, thisActivity is the current activity
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-
-
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.CAMERA)) {
-
-            } else {
-
-                // No explanation needed; request the permission
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.CAMERA},
-                        MY_PERMISSIONS_REQUEST);
-
-            }
-        } else {
-
-        }
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-
-
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-
-            } else {
-
-                // No explanation needed; request the permission
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        MY_PERMISSIONS_REQUEST);
-
-            }
-        } else {
-
-        }
 
         /*Intent intent = getIntent();
         if (intent != null) {
@@ -265,7 +244,16 @@ public class MainActivity extends AppCompatActivity implements ActivityMessage,
     }
 
     public void AddNewCar(View view) {
-        Intent intent = new Intent(MainActivity.this, AddCarActivity.class);
-        startActivity(intent);
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_CAMERA);
+        } else {
+            Intent intent = new Intent(MainActivity.this, AddCarActivity.class);
+            startActivity(intent);
+        }
+
+
     }
 }

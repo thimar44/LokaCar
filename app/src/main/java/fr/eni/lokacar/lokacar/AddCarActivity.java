@@ -37,11 +37,13 @@ import java.util.List;
 
 import fr.eni.lokacar.lokacar.been.Agence;
 import fr.eni.lokacar.lokacar.been.Marque;
+import fr.eni.lokacar.lokacar.been.Photo;
 import fr.eni.lokacar.lokacar.been.TypeCarburant;
 import fr.eni.lokacar.lokacar.been.TypeVehicule;
 import fr.eni.lokacar.lokacar.been.Vehicule;
 import fr.eni.lokacar.lokacar.dao.AgenceDao;
 import fr.eni.lokacar.lokacar.dao.MarqueDao;
+import fr.eni.lokacar.lokacar.dao.PhotoDao;
 import fr.eni.lokacar.lokacar.dao.TypeCarburantDao;
 import fr.eni.lokacar.lokacar.dao.TypeVehiculeDao;
 import fr.eni.lokacar.lokacar.dao.VehiculeDao;
@@ -55,6 +57,7 @@ public class AddCarActivity extends AppCompatActivity {
     private TypeCarburantDao typeCarburantDao;
     private TypeVehiculeDao typeVehiculeDao;
     private AgenceDao agenceDao;
+    private PhotoDao photoDao;
 
     private EditText vehiculeDenomination;
     private EditText vehiculeImmatriculation;
@@ -63,11 +66,11 @@ public class AddCarActivity extends AppCompatActivity {
     private Spinner vehiculeType;
     private EditText vehiculeKilometrage;
     private EditText vehiculePrixJour;
+    private ImageView vehiculePhoto;
 
-    private List<String> mCurrentPhotoPath = new ArrayList<>();
+    private String mCurrentPhotoPath;
 
     private static final int REQUEST_IMAGE_CAPTURE = 1;
-    private static int index = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +95,7 @@ public class AddCarActivity extends AppCompatActivity {
         typeCarburantDao = new TypeCarburantDao(context);
         typeVehiculeDao = new TypeVehiculeDao(context);
         agenceDao = new AgenceDao(context);
+        photoDao = new PhotoDao(context);
 
         vehiculeDenomination = findViewById(R.id.AddVehiculedenomination);
         vehiculeImmatriculation = findViewById(R.id.AddVehiculeImmatriculation);
@@ -100,6 +104,7 @@ public class AddCarActivity extends AppCompatActivity {
         vehiculeType = findViewById(R.id.AddVehiculetypeVehicule);
         vehiculeKilometrage = findViewById(R.id.AddVehiculeKilometrage);
         vehiculePrixJour = findViewById(R.id.AddVehiculePrixJour);
+        vehiculePhoto = findViewById(R.id.AddVehiculePicture);
 
         spinnerParsage();
     }
@@ -132,6 +137,15 @@ public class AddCarActivity extends AppCompatActivity {
 
     public void addVehicule(View view) {
         if (validateForm()) {
+            Photo photo = null;
+            if (mCurrentPhotoPath != "") {
+                photo = new Photo(mCurrentPhotoPath);
+                long id = photoDao.insert(photo);
+                if(id != 0){
+                    photo.setId((int) id);
+                }
+            }
+
 
             String denomination = vehiculeDenomination.getText().toString();
             String immatriculation = vehiculeImmatriculation.getText().toString();
@@ -144,8 +158,16 @@ public class AddCarActivity extends AppCompatActivity {
             SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
             int idAgence = prefs.getInt("idAgence", 0);
             Agence agence = agenceDao.getAgenceFromId(idAgence);
-            Vehicule vehicule = new Vehicule(agence, typeVehicule, typeCarburant, kilometrage, prixJour, false, denomination, immatriculation, marque);
+
+            Vehicule vehicule;
+            if (photo != null) {
+                vehicule = new Vehicule(agence, typeVehicule, typeCarburant, kilometrage, prixJour, false, denomination, immatriculation, photo, marque);
+            } else {
+                vehicule = new Vehicule(agence, typeVehicule, typeCarburant, kilometrage, prixJour, false, denomination, immatriculation, marque);
+            }
             long idVehicule = vehiculeDao.insertOrUpdate(vehicule);
+
+
             if (idVehicule != -1) {
                 Intent intent = new Intent(AddCarActivity.this, MainActivity.class);
                 startActivity(intent);
@@ -167,7 +189,7 @@ public class AddCarActivity extends AppCompatActivity {
                 photoFile = createImageFile();
             } catch (IOException ex) {
                 // Error occurred while creating the File
-                Log.v("LOG -> " , ex.getMessage());
+                Log.v("LOG -> ", ex.getMessage());
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
@@ -192,7 +214,7 @@ public class AddCarActivity extends AppCompatActivity {
         );
 
         // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath.add(image.getAbsolutePath());
+        mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
 
@@ -202,18 +224,8 @@ public class AddCarActivity extends AppCompatActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-
-            Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath.get(index), options);
-            Bitmap scaled = Bitmap.createScaledBitmap(bitmap, 350, 500, true);
-
-            LinearLayout lL = findViewById(R.id.layoutPictures);
-
-            ImageView imgView = new ImageView(this);
-
-            imgView.setVisibility(View.VISIBLE);
-            imgView.setImageBitmap(scaled);
-            lL.addView(imgView);
-            index++;
+            Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, options);
+            vehiculePhoto.setImageBitmap(bitmap);
         }
     }
 

@@ -36,6 +36,7 @@
                 android:paddingBottom="0dp">
 
                 <ImageView
+                    android:id="@+id/photoVehicule"
                     android:layout_height="75dp"
                     android:layout_width="0dp"
                     android:layout_weight="0.3"

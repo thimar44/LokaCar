@@ -23,6 +23,7 @@ public class ModeleHelper extends SQLiteOpenHelper {
         db.execSQL(DataContract.TYPE_CARBURANT_CREATE_TABLE);
         db.execSQL(DataContract.TYPE_VEHICULE_CREATE_TABLE);
         db.execSQL(DataContract.VEHICULE_CREATE_TABLE);
+        db.execSQL(DataContract.LOCATION_PHOTO_CREATE_TABLE);
     }
 
     @Override
@@ -36,6 +37,7 @@ public class ModeleHelper extends SQLiteOpenHelper {
         db.execSQL(DataContract.QUERY_DELETE_TABLE_TYPE_CARBURANT);
         db.execSQL(DataContract.QUERY_DELETE_TABLE_TYPE_VEHICULE);
         db.execSQL(DataContract.QUERY_DELETE_TABLE_VEHICULE);
+        db.execSQL(DataContract.QUERY_DELETE_TABLE_LOCATION_PHOTO);
         onCreate(db);
     }
 }

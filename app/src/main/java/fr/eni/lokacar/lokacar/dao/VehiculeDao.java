@@ -15,6 +15,7 @@ import java.util.List;
 
 import fr.eni.lokacar.lokacar.been.Agence;
 import fr.eni.lokacar.lokacar.been.Marque;
+import fr.eni.lokacar.lokacar.been.Photo;
 import fr.eni.lokacar.lokacar.been.TypeCarburant;
 import fr.eni.lokacar.lokacar.been.TypeVehicule;
 import fr.eni.lokacar.lokacar.been.Vehicule;
@@ -62,6 +63,7 @@ public class VehiculeDao {
         values.put(DataContract.VEHICULE_ENLOCATION, vehicule.isEnLocation());
         values.put(DataContract.VEHICULE_DESIGNATION, vehicule.getDesignation());
         values.put(DataContract.VEHICULE_IMMATRICULATION, vehicule.getImmatriculation());
+        values.put(DataContract.VEHICULE_IDPHOTO, vehicule.getPhoto().getId());
         return values;
     }
 
@@ -129,19 +131,23 @@ public class VehiculeDao {
                 String designation = cursor.getString(cursor.getColumnIndex(DataContract.VEHICULE_DESIGNATION));
                 String immatriculation = cursor.getString(cursor.getColumnIndex(DataContract.VEHICULE_IMMATRICULATION));
                 int idMarque = cursor.getInt(cursor.getColumnIndex(DataContract.VEHICULE_IDMARQUE));
+                int idPhoto = cursor.getInt(cursor.getColumnIndex(DataContract.VEHICULE_IDPHOTO));
 
                 Agence agence = agenceDao.getAgenceFromId(idAgence);
                 TypeVehicule typeVehicule = typeVehiculeDao.getTypeVehiculeFromId(idTypevehicule);
                 TypeCarburant typeCarburant = typeCarburantDao.getTypeCarburantFromId(idTypeCarburant);
                 Marque marque = marqueDao.getMarqueFromId(idMarque);
 
-                objects.add(new Vehicule(id, agence, typeVehicule, typeCarburant, kilometrage, prixJour, isEnLocation, designation, immatriculation, marque));
-
+                if(idPhoto > 0){
+                    Photo photo = photoDao.getPhotoFromId(idPhoto);
+                    objects.add(new Vehicule(id, agence, typeVehicule, typeCarburant, kilometrage, prixJour, isEnLocation, designation, immatriculation, photo, marque));
+                }else{
+                    objects.add(new Vehicule(id, agence, typeVehicule, typeCarburant, kilometrage, prixJour, isEnLocation, designation, immatriculation, marque));
+                }
             } while (cursor.moveToNext());
 
             cursor.close();
         }
-
         return objects;
     }
 
@@ -176,12 +182,22 @@ public class VehiculeDao {
             String designation = cursor.getString(cursor.getColumnIndex(DataContract.VEHICULE_DESIGNATION));
             String immatriculation = cursor.getString(cursor.getColumnIndex(DataContract.VEHICULE_IMMATRICULATION));
             int idMarque = cursor.getInt(cursor.getColumnIndex(DataContract.VEHICULE_IDMARQUE));
+            int idPhoto = cursor.getInt(cursor.getColumnIndex(DataContract.VEHICULE_IDPHOTO));
+
 
             Agence agence = agenceDao.getAgenceFromId(idAgence);
             TypeVehicule typeVehicule = typeVehiculeDao.getTypeVehiculeFromId(idTypevehicule);
             TypeCarburant typeCarburant = typeCarburantDao.getTypeCarburantFromId(idTypeCarburant);
             Marque marque = marqueDao.getMarqueFromId(idMarque);
-            object = new Vehicule(idVehicule, agence, typeVehicule, typeCarburant, kilometrage, prixJour, isEnLocation, designation, immatriculation, marque);
+
+            if(idPhoto > 0){
+                Photo photo = photoDao.getPhotoFromId(idPhoto);
+                object = new Vehicule(idVehicule, agence, typeVehicule, typeCarburant, kilometrage, prixJour, isEnLocation, designation, immatriculation, photo, marque);
+            }else{
+                object = new Vehicule(idVehicule, agence, typeVehicule, typeCarburant, kilometrage, prixJour, isEnLocation, designation, immatriculation, marque);
+            }
+
+
             cursor.close();
         }
         return object;
@@ -252,7 +268,13 @@ public class VehiculeDao {
                 TypeCarburant typeCarburant2 = typeCarburantDao.getTypeCarburantFromId(idTypeCarburant);
                 Marque marque2 = marqueDao.getMarqueFromId(idMarque);
 
-                objects.add(new Vehicule(id, agence, typeVehicule2, typeCarburant2, kilometrage, prixJour, isEnLocation, designation, immatriculation, marque2));
+                int idPhoto = cursor.getInt(cursor.getColumnIndex(DataContract.VEHICULE_IDPHOTO));
+                if(idPhoto > 0){
+                    Photo photo = photoDao.getPhotoFromId(idPhoto);
+                    objects.add(new Vehicule(id, agence, typeVehicule2, typeCarburant2, kilometrage, prixJour, isEnLocation, designation, immatriculation, photo, marque2));
+                }else{
+                    objects.add(new Vehicule(id, agence, typeVehicule2, typeCarburant2, kilometrage, prixJour, isEnLocation, designation, immatriculation, marque2));
+                }
 
             } while (cursor.moveToNext());
 
