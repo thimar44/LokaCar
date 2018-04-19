@@ -27,7 +27,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="CA generaux"
+                    android:text="CA généraux"
                     android:textAlignment="center"
                     android:textSize="20dp"
                     android:paddingBottom="10dp"
@@ -72,10 +72,12 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
-                        android:text="100€" />
+                        android:text="100€"
+                        />
                 </LinearLayout>
             </LinearLayout>
 
+            <include layout="@layout/horizontal_line"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -93,8 +95,9 @@
                     android:id="@+id/CAMoyenParVehicule"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
-                    android:text="test1€\ntest2ere" />
+                    android:paddingLeft="@dimen/padding_form"
+                    android:paddingRight="@dimen/padding_form"
+                     />
 
 
             </LinearLayout>

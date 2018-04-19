@@ -16,7 +16,7 @@
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardBackgroundColor="@color/colorDark"
+
         app:cardCornerRadius="15dp"
         android:layout_margin="4dp"
         app:cardElevation="5dp"
@@ -56,7 +56,6 @@
                         android:id="@+id/marqueVehicule"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@android:color/white"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         tools:hint="Marque" />
@@ -65,7 +64,6 @@
                         android:id="@+id/disignationVehicule"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@android:color/white"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         tools:hint="Desigration" />
@@ -73,7 +71,6 @@
                         android:id="@+id/immatriculationVehicule"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@android:color/white"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         tools:hint="35-DJK-31" />
@@ -126,8 +123,13 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:text="Louer ce véhicule"
-                    android:textColor="@android:color/holo_blue_bright"
-                    android:textSize="20dp" />
+                    android:textColor="@android:color/white"
+                    android:background="@color/colorGreenButton"
+                    android:textSize="15dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingRight="15dp"
+                    android:paddingLeft="15dp"/>
 
             </RelativeLayout>
 

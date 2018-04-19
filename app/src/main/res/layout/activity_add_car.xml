@@ -196,12 +196,15 @@
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="25dp"
+                    android:paddingRight="25dp">
 
                     <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
+                        android:background="@drawable/shape_button"
                         android:onClick="addVehicule"
                         android:text="@string/valider" />
 
@@ -211,6 +214,7 @@
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
                         android:onClick="addPhoto"
+                        android:background="@drawable/shape_button"
                         android:text="Ajouter une photo" />
                 </RelativeLayout>
 

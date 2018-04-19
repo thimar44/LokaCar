@@ -216,6 +216,18 @@ public class RetourActivity extends AppCompatActivity {
 
             builder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
+                    Intent i = new Intent(Intent.ACTION_SEND);
+                    i.setType("message/rfc822");
+                    i.putExtra(Intent.EXTRA_EMAIL  , new String[]{client.getMail()});
+                    i.putExtra(Intent.EXTRA_SUBJECT, "Facture Location");
+                    String message = "Bonjour " + client.getPrenom() + " " + client.getNom() + ",\n";
+                    message += "Votre facture est de " + location.getPrix() + " € TTC.";
+                    i.putExtra(Intent.EXTRA_TEXT   , message);
+                    try {
+                        startActivity(Intent.createChooser(i, "Envoyer e-mail"));
+                    } catch (android.content.ActivityNotFoundException ex) {
+                        Toast.makeText(RetourActivity.this, "Vous n'avez pas de client e-mail installé.", Toast.LENGTH_SHORT).show();
+                    }
                     finish();
                 }
             });

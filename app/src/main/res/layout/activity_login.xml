@@ -75,6 +75,8 @@
             android:layout_height="@android:dimen/app_icon_size"
             android:layout_alignParentRight="true"
             android:onClick="loginCheck"
+            android:background="@drawable/shape_button"
+
             android:text="@string/valider" />
     </RelativeLayout>
 
