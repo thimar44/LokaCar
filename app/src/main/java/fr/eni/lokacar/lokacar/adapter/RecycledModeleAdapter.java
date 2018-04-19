@@ -55,10 +55,11 @@ public class RecycledModeleAdapter extends Adapter<RecycledModeleAdapter.ViewHol
         holder.mImmatriculation.setText(lstVehicules.get(position).getImmatriculation());
 
         if (holder.mItem.isEnLocation()){
-            holder.cardView.setCardBackgroundColor(  res.getColor(R.color.colorRed));
+
             holder.message.setText("Retour du véhicule");
+            holder.message.setBackgroundColor(res.getColor(R.color.colorRedButton));
         } else {
-            holder.cardView.setCardBackgroundColor( res.getColor(R.color.colorGreenDark));
+            holder.message.setBackgroundColor( res.getColor(R.color.colorGreenDark));
             holder.message.setText("Louer ce véhicule");
         }
 

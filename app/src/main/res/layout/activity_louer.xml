@@ -95,12 +95,7 @@
 
             </LinearLayout>
 
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="25dp"
-                android:layout_marginTop="25dp"
-                android:background="@color/colorPrimaryDark" />
+            <include layout="@layout/horizontal_line"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -270,12 +265,7 @@
 
             </LinearLayout>
 
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="25dp"
-                android:layout_marginTop="25dp"
-                android:background="@color/colorPrimaryDark" />
+            <include layout="@layout/horizontal_line"/>
 
             <LinearLayout
                 android:id="@+id/layoutPictures"
@@ -298,17 +288,13 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:onClick="addPhotoLouer"
+                        android:background="@drawable/shape_button"
                         android:text="Ajouter une photo de départ" />
                 </RelativeLayout>
 
             </LinearLayout>
 
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="25dp"
-                android:layout_marginTop="25dp"
-                android:background="@color/colorPrimaryDark" />
+            <include layout="@layout/horizontal_line"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -321,7 +307,7 @@
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/colorPrimary200"
+                    android:background="@drawable/shape_button"
                     android:onClick="validerLouer"
                     android:text="Valider" />
             </RelativeLayout>

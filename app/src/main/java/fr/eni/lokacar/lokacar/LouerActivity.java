@@ -72,6 +72,8 @@ public class LouerActivity extends AppCompatActivity {
     private LocationDao locationDao;
     private VehiculeDao vehiculeDao;
 
+    private Client client;
+
     private List<String> mCurrentPhotoPath = new ArrayList<>();
 
     private static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -142,7 +144,7 @@ public class LouerActivity extends AppCompatActivity {
     public void validerLouer(View view) {
 
         if (validateForm()) {
-            Client client = new Client(
+            client = new Client(
                     Integer.valueOf(edClientCodePostal.getText().toString()),
                     Integer.valueOf(edClientTel.getText().toString()),
                     edClientEmail.getText().toString(),
@@ -177,7 +179,13 @@ public class LouerActivity extends AppCompatActivity {
 
             builder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    Log.d("Thibaud", "On envoit le récapitulatif au client");
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("sms:" + client.getNumeroTelephone()));
+
+                    String message = "Bonjour " + client.getPrenom() + " " + client.getNom() + ",\n";
+                    message += "Nous avons le plaisir de vous comfirmer la location du véhicule " + vehicule.getDesignation();
+                    intent.putExtra("sms_body", message);
+                    startActivity(intent);
+
                     finish();
                 }
             });

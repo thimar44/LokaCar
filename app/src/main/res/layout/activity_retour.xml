@@ -102,12 +102,7 @@
 
             </LinearLayout>
 
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="25dp"
-                android:background="@color/colorPrimaryDark" />
+            <include layout="@layout/horizontal_line"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -192,12 +187,7 @@
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="25dp"
-                android:background="@color/colorPrimaryDark" />
+            <include layout="@layout/horizontal_line"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -292,12 +282,7 @@
                     android:inputType="number"/>
             </LinearLayout>
 
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="25dp"
-                android:layout_marginTop="25dp"
-                android:background="@color/colorPrimaryDark" />
+            <include layout="@layout/horizontal_line"/>
 
             <LinearLayout
                 android:id="@+id/layoutPictures"
@@ -321,17 +306,13 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:text="Ajouter une photo de retour"
+                        android:background="@drawable/shape_button"
                         android:onClick="addPhotoLouer"/>
                 </RelativeLayout>
 
             </LinearLayout>
 
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="25dp"
-                android:layout_marginTop="25dp"
-                android:background="@color/colorPrimaryDark" />
+            <include layout="@layout/horizontal_line"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -345,7 +326,7 @@
                     android:layout_height="match_parent"
                     android:text="Valider"
                     android:onClick="validerRetour"
-                    android:background="@color/colorPrimary200"/>
+                    android:background="@drawable/shape_button"/>
             </RelativeLayout>
 
         </LinearLayout>
